@@ -8,7 +8,6 @@ GTSMotionClass::GTSMotionClass(void)
 {
 }
 
-
 GTSMotionClass::~GTSMotionClass(void)
 {
 }
@@ -282,62 +281,3 @@ void GTSMotionClass::EmgMultiMove(int nAixNum)
         StopMove(i, 1);
     }
 }
-
-//double GTSMotionClass::ConvertToMM(int Axis_ID, double Plues)
-//{
-//    double result=Plues*mAixPara[Axis_ID].mm_per_plues;
-//    return result;
-//}
-//
-//double GTSMotionClass::ConvertToPlues(int Axis_ID,float mm)
-//{
-//    double result=mm/(double)mAixPara[Axis_ID].mm_per_plues;
-//    return result;
-//}
-
-//short GTSMotionClass::InitCard(string mConfigPath)
-//{
-//    short sRtn;
-//
-//    sRtn = GT_Open();
-//    if(sRtn == 0)
-//    {
-//        sRtn = GT_Reset();
-//        if(sRtn == 0)
-//        {
-//            sRtn = LoadConfig(mConfigPath);
-//            if(sRtn == 0)
-//            {
-//                sRtn = GT_ClrSts(1,8);
-//                if(sRtn != 0)
-//                {
-//                    //cout<<"清除状态失败！";
-//                    return sRtn;
-//                }
-//            }
-//            else
-//            {
-//                //cout<<"加载配置文件失败！";
-//                return sRtn;
-//            }
-//        }
-//        else
-//        {
-//            //cout<<"复位失败！";
-//            return sRtn;
-//        }
-//    }
-//    else
-//    {
-//        // cout<<"运动控制卡打开失败！";
-//        return -1;
-//    }
-//
-//
-//    //sRtn = ServoOn(AIXNUM);
-//    //    if(sRtn != 0)return -1;
-//    GT_HomeInit(); // 自动回原点功能初始化
-//    //cout<<"Initial success";
-//
-//    return 0;
-//}
