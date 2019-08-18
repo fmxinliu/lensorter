@@ -49,10 +49,10 @@ short GTSMotionClass::AixOff(short index)
     return GT_AxisOff(index + 1);
 }
 
-short GTSMotionClass::AixON(int Count)
+short GTSMotionClass::AixON(int nCount)
 {
     short Rtn = 0;
-    for(int i = 0; i < Count; i++)
+    for(int i = 0; i < nCount; i++)
     {
         Rtn = GT_AxisOn(i + 1);
     }
@@ -60,10 +60,10 @@ short GTSMotionClass::AixON(int Count)
     return Rtn;
 }
 
-short GTSMotionClass::AixOFF(int Count)
+short GTSMotionClass::AixOFF(int nCount)
 {
     short Rtn=0;
-    for(int i = 0; i < Count; i++)
+    for(int i = 0; i < nCount; i++)
     {
         Rtn = GT_AxisOff(i + 1);
     }
@@ -77,14 +77,14 @@ short GTSMotionClass::LoadConfig(std::string mConfigPath)
     return GT_LoadConfig((char *)mConfigPath.c_str());
 }
 
-short GTSMotionClass::ClearSts(int startAix, int Count)
+short GTSMotionClass::ClearSts(int startAix, int nCount)
 {
-	return GT_ClrSts(startAix, Count);
+	return GT_ClrSts(startAix, nCount);
 }
 
-short GTSMotionClass::SetZeroPos(int startAix, int Count)
+short GTSMotionClass::SetZeroPos(int startAix, int nCount)
 {
-    return GT_ZeroPos(startAix , Count);
+    return GT_ZeroPos(startAix , nCount);
 }
 
 short GTSMotionClass::HomeInit()

@@ -24,10 +24,13 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GtsMotion.h">
+    <ClInclude Include="gtsmotionclass.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="gtsmotionclass.h">
+    <ClInclude Include="motionparam.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="gtsmotion.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,8 +44,11 @@
     <ClCompile Include="gtsmotionclass.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="GtsMotion.cpp">
+    <ClCompile Include="motionparam.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="gtsmotion.cpp">
+      <Filter>头文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

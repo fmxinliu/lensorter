@@ -18,11 +18,11 @@ public:
 
     short AixOn(short index);
     short AixOff(short index);
-    short AixON(int Count);
-    short AixOFF(int Count);
+    short AixON(int nCount);
+    short AixOFF(int nCount);
     short LoadConfig(std::string mConfigPath);
-	short ClearSts(int startAix, int Count); // 清除驱动器报警标志
-	short SetZeroPos(int startAix, int Count); // 清零规划位置和实际位置
+	short ClearSts(int startAix, int nCount); // 清除驱动器报警标志
+	short SetZeroPos(int startAix, int nCount); // 清零规划位置和实际位置
 	short HomeInit(); // 初始化自动回原点功能
 
 	short JogMove(int nAixID, int nSpeed, double nACC, double nDEC, double nSmooth);
@@ -30,7 +30,7 @@ public:
     short P2PMoveWaitFinished(int nAixID, long pos/*pulse*/, int nSpeed, double nACC, double nDEC, double nSmoothTime);
 
     // 复位
-	short HomeWithSensor(int axisID, double pos, double nSpeed, double nACC , double offset=0);
+	short HomeWithSensor(int axisID, double pos, double nSpeed, double nACC, double offset=0);
 	bool GetHomeDone(int axisID);
 
     // 停止
@@ -42,7 +42,7 @@ public:
     // IO
     int ReadDI(int port);
     int ReadDO(int port);
-	short SetDO(int port,int value);
+	short SetDO(int port, int value);
 
     double* GTSMotionClass::ReadEncodePos(int nStartInex, int nCount); // 读取编码器位置
 };
