@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UITest", "UITest\UITest.csp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MotionControl", "MotionControl\MotionControl.vcxproj", "{7830A190-858E-45F9-B52B-D39BEBB3DB39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigManager", "ConfigManager\ConfigManager.csproj", "{137A4D7F-EEB9-43DD-8520-7B0F25D787FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACM", "ACM\ACM.csproj", "{18AB4C83-383D-4348-B378-3D0BCB0DD3C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,16 +37,16 @@ Global
 		{7830A190-858E-45F9-B52B-D39BEBB3DB39}.Release|Win32.ActiveCfg = Release|Win32
 		{7830A190-858E-45F9-B52B-D39BEBB3DB39}.Release|Win32.Build.0 = Release|Win32
 		{7830A190-858E-45F9-B52B-D39BEBB3DB39}.Release|x86.ActiveCfg = Release|Win32
-		{137A4D7F-EEB9-43DD-8520-7B0F25D787FB}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{137A4D7F-EEB9-43DD-8520-7B0F25D787FB}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{137A4D7F-EEB9-43DD-8520-7B0F25D787FB}.Debug|Win32.ActiveCfg = Debug|x86
-		{137A4D7F-EEB9-43DD-8520-7B0F25D787FB}.Debug|x86.ActiveCfg = Debug|x86
-		{137A4D7F-EEB9-43DD-8520-7B0F25D787FB}.Debug|x86.Build.0 = Debug|x86
-		{137A4D7F-EEB9-43DD-8520-7B0F25D787FB}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{137A4D7F-EEB9-43DD-8520-7B0F25D787FB}.Release|Mixed Platforms.Build.0 = Release|x86
-		{137A4D7F-EEB9-43DD-8520-7B0F25D787FB}.Release|Win32.ActiveCfg = Release|x86
-		{137A4D7F-EEB9-43DD-8520-7B0F25D787FB}.Release|x86.ActiveCfg = Release|x86
-		{137A4D7F-EEB9-43DD-8520-7B0F25D787FB}.Release|x86.Build.0 = Release|x86
+		{18AB4C83-383D-4348-B378-3D0BCB0DD3C0}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{18AB4C83-383D-4348-B378-3D0BCB0DD3C0}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{18AB4C83-383D-4348-B378-3D0BCB0DD3C0}.Debug|Win32.ActiveCfg = Debug|x86
+		{18AB4C83-383D-4348-B378-3D0BCB0DD3C0}.Debug|x86.ActiveCfg = Debug|x86
+		{18AB4C83-383D-4348-B378-3D0BCB0DD3C0}.Debug|x86.Build.0 = Debug|x86
+		{18AB4C83-383D-4348-B378-3D0BCB0DD3C0}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{18AB4C83-383D-4348-B378-3D0BCB0DD3C0}.Release|Mixed Platforms.Build.0 = Release|x86
+		{18AB4C83-383D-4348-B378-3D0BCB0DD3C0}.Release|Win32.ActiveCfg = Release|x86
+		{18AB4C83-383D-4348-B378-3D0BCB0DD3C0}.Release|x86.ActiveCfg = Release|x86
+		{18AB4C83-383D-4348-B378-3D0BCB0DD3C0}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

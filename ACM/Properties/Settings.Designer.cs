@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ConfigManager.Properties
+namespace ACM.Properties
 {
 
 

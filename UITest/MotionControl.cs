@@ -12,7 +12,7 @@ namespace UITest
 {
     public partial class MotionControl : Form
     {
-        private GtsMotion gts = new GtsMotion();
+        private GtsMotionProxy gts = new GtsMotionProxy();
 
         public MotionControl()
         {

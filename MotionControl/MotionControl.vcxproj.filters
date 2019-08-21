@@ -30,15 +30,12 @@
     <ClInclude Include="motionparam.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="gtsmotion.h">
+    <ClInclude Include="gtsmotionproxy.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="MotionControl.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="gtsmotionclass.cpp">
@@ -47,8 +44,11 @@
     <ClCompile Include="motionparam.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="gtsmotion.cpp">
-      <Filter>头文件</Filter>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="gtsmotionproxy.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
