@@ -1,0 +1,20 @@
+#project cache#
+*.suo
+*.sdf
+*.opensdf
+*.csproj.user
+*.aps
+*.csproj.user
+*.vcxproj.user
+
+
+#temporary directory#
+*/bin
+*/obj
+*/Debug
+*/Release
+
+#unadd directory#
+io
+printer
+sensor
