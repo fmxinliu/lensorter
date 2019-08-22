@@ -116,7 +116,7 @@ short GTSMotionClass::JogMove(int nAixID, int nSpeed, double nACC, double nDEC, 
 	return sRtn;
 }
 
-short GTSMotionClass::P2PMove(int nAixID, long pos, int nSpeed, double nACC, double nDEC, double nSmoothTime)
+short GTSMotionClass::P2PMove(int nAixID, long pos, int nSpeed, double nACC, double nDEC, short nSmoothTime)
 {
 	nAixID += 1;
 	TTrapPrm trap;
@@ -136,7 +136,7 @@ short GTSMotionClass::P2PMove(int nAixID, long pos, int nSpeed, double nACC, dou
 	// 启动AXIS轴的运动
 	sRtn = GT_Update(1<<(nAixID-1));
     long sts;
-    double prfPos;
+    //double prfPos;
     //do
     //{
     //// 读取AXIS轴的状态
@@ -148,7 +148,7 @@ short GTSMotionClass::P2PMove(int nAixID, long pos, int nSpeed, double nACC, dou
 	return sRtn;
 }
 
-short GTSMotionClass::P2PMoveWaitFinished(int nAixID, long pos, int nSpeed, double nACC, double nDEC, double nSmoothTime)
+short GTSMotionClass::P2PMoveWaitFinished(int nAixID, long pos, int nSpeed, double nACC, double nDEC, short nSmoothTime)
 {
     nAixID += 1;
     TTrapPrm trap;
@@ -182,7 +182,7 @@ short GTSMotionClass::P2PMoveWaitFinished(int nAixID, long pos, int nSpeed, doub
     return sRtn;
 }
 
-short GTSMotionClass::HomeWithSensor(int axisID, double pos, double nSpeed, double nACC, double offset)
+short GTSMotionClass::HomeWithSensor(int axisID, long pos, double nSpeed, double nACC, long offset)
 {
 	short sRtn = GT_Home(axisID + 1, pos, nSpeed, nACC, offset);
     unsigned short sts = 0;

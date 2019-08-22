@@ -26,11 +26,11 @@ public:
 	short HomeInit(); // 初始化自动回原点功能
 
 	short JogMove(int nAixID, int nSpeed, double nACC, double nDEC, double nSmooth);
-	short P2PMove(int nAixID, long pos/*pulse*/, int nSpeed, double nACC, double nDEC, double nSmoothTime);
-    short P2PMoveWaitFinished(int nAixID, long pos/*pulse*/, int nSpeed, double nACC, double nDEC, double nSmoothTime);
+	short P2PMove(int nAixID, long pos/*pulse*/, int nSpeed, double nACC, double nDEC, short nSmoothTime);
+    short P2PMoveWaitFinished(int nAixID, long pos/*pulse*/, int nSpeed, double nACC, double nDEC, short nSmoothTime);
 
     // 复位
-	short HomeWithSensor(int axisID, double pos, double nSpeed, double nACC, double offset=0);
+	short HomeWithSensor(int axisID, long pos/*pulse*/, double nSpeed, double nACC, long offset=0);
 	bool GetHomeDone(int axisID);
 
     // 停止

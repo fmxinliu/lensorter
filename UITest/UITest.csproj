@@ -93,12 +93,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MotionControl\MotionControl.vcxproj">
-      <Project>{7830A190-858E-45F9-B52B-D39BEBB3DB39}</Project>
-      <Name>MotionControl</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 和 x64%29</ProductName>

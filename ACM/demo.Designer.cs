@@ -1,6 +1,6 @@
 ﻿namespace ACM
 {
-    partial class Form1
+    partial class demo
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -108,7 +108,7 @@
             this.Controls.Add(this.btnLoadClass);
             this.Controls.Add(this.btnLoadValue);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "SharpConfig";
             this.ResumeLayout(false);
 
         }
