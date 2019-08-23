@@ -1,7 +1,7 @@
 // MotionControl.cpp: 主项目文件。
 
 #include "stdafx.h"
-#include "Form1.h"
+#include "paraInfo.h"
 
 using namespace MotionControl;
 
@@ -13,6 +13,6 @@ int main(array<System::String ^> ^args)
 	Application::SetCompatibleTextRenderingDefault(false); 
 
 	// 创建主窗口并运行它
-	Application::Run(gcnew Form1());
+	Application::Run(gcnew ParaInfo());
 	return 0;
 }

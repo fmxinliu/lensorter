@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6F698B39-6B46-4251-AD14-E441257E2C24}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CCL</RootNamespace>
+    <AssemblyName>CCL</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Clock\Clock.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Clock\Clock.designer.cs">
+      <DependentUpon>Clock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LinearScale\LinearScale.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LinearScale\LinearScale.Designer.cs">
+      <DependentUpon>LinearScale.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RowMergeView\RowMergeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RowMergeView\RowMergeView.designer.cs">
+      <DependentUpon>RowMergeView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RuleAndGrid\RuleAndGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RuleAndGrid\RuleAndGrid.designer.cs">
+      <DependentUpon>RuleAndGrid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Ruler\Ruler.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ruler\Ruler.designer.cs">
+      <DependentUpon>Ruler.cs</DependentUpon>
+    </Compile>
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Clock\Clock.resx">
+      <DependentUpon>Clock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LinearScale\LinearScale.resx">
+      <DependentUpon>LinearScale.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RowMergeView\RowMergeView.resx">
+      <DependentUpon>RowMergeView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RuleAndGrid\RuleAndGrid.resx">
+      <DependentUpon>RuleAndGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ruler\Ruler.resx">
+      <DependentUpon>Ruler.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Clock\Clock.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Ruler\Ruler.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RuleAndGrid\RuleAndGrid.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RowMergeView\RowMergeView.bmp" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="LinearScale\LinearScale.bmp" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

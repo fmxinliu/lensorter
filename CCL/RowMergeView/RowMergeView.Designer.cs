@@ -1,6 +1,6 @@
-﻿namespace UITest
+﻿namespace CCL
 {
-    partial class MotionControl
+    partial class RowMergeView
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -20,7 +20,7 @@
             base.Dispose(disposing);
         }
 
-        #region Windows 窗体设计器生成的代码
+        #region 组件设计器生成的代码
 
         /// <summary>
         /// 设计器支持所需的方法 - 不要
@@ -28,20 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             this.SuspendLayout();
             // 
-            // MotionControl
+            // timer1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(282, 255);
-            this.Name = "MotionControl";
-            this.Text = "Form1";
+            this.timer1.Interval = 20;
+            // 
+            // RowMergeView
+            // 
+            this.RowTemplate.Height = 23;
+            ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.Timer timer1;
     }
 }
-

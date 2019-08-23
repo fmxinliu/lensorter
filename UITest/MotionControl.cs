@@ -13,11 +13,12 @@ namespace UITest
     public partial class MotionControl : Form
     {
         private GtsMotionProxy gts = new GtsMotionProxy();
-
+        private ParaInfo ui = new ParaInfo();
         public MotionControl()
         {
             InitializeComponent();
             gts.print();
+            ui.Show();
         }
     }
 }

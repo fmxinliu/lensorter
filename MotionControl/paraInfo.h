@@ -12,10 +12,10 @@ namespace MotionControl {
 	/// <summary>
 	/// Form1 摘要
 	/// </summary>
-	public ref class Form1 : public System::Windows::Forms::Form
+	public ref class ParaInfo : public System::Windows::Forms::Form
 	{
 	public:
-		Form1(void)
+		ParaInfo(void)
 		{
 			InitializeComponent();
 			//
@@ -27,7 +27,7 @@ namespace MotionControl {
 		/// <summary>
 		/// 清理所有正在使用的资源。
 		/// </summary>
-		~Form1()
+		~ParaInfo()
 		{
 			if (components)
 			{
@@ -48,12 +48,18 @@ namespace MotionControl {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->components = gcnew System::ComponentModel::Container();
-			this->Size = System::Drawing::Size(300,300);
-			this->Text = L"Form1";
-			this->Padding = System::Windows::Forms::Padding(0);
-			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-		}
+            this->SuspendLayout();
+            // 
+            // ParaInfo
+            // 
+            this->AutoScaleDimensions = System::Drawing::SizeF(8, 15);
+            this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+            this->ClientSize = System::Drawing::Size(775, 511);
+            this->Name = L"ParaInfo";
+            this->Text = L"运动参数";
+            this->ResumeLayout(false);
+
+        }
 #pragma endregion
 	};
 }
