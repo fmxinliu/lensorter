@@ -16,6 +16,7 @@ namespace UITest
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MotionControl());
+            //Application.Run(new Form1());
         }
     }
 }

@@ -64,6 +64,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="MotionControl.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,6 +78,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MotionControl.resx">
       <DependentUpon>MotionControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -118,9 +127,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MotionControl\MotionControl.vcxproj">
-      <Project>{161AC2E2-925B-468E-997C-7CD9A39A84A1}</Project>
-      <Name>MotionControl</Name>
+    <ProjectReference Include="..\CCL\CCL.csproj">
+      <Project>{6F698B39-6B46-4251-AD14-E441257E2C24}</Project>
+      <Name>CCL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

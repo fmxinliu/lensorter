@@ -1,5 +1,7 @@
 #pragma once
 
+#using "..\bin\Debug\\CCL.dll"
+
 namespace MotionControl {
 
 	using namespace System;
@@ -8,6 +10,7 @@ namespace MotionControl {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+    using namespace CCL;
 
 	/// <summary>
 	/// Form1 摘要
@@ -33,7 +36,10 @@ namespace MotionControl {
 			{
 				delete components;
 			}
-		}
+        }
+    private: CCL::RowMergeView^  dataGridView1;
+
+    protected: 
 
 	private:
 		/// <summary>
@@ -52,15 +58,13 @@ namespace MotionControl {
             // 
             // ParaInfo
             // 
-            this->AutoScaleDimensions = System::Drawing::SizeF(8, 15);
-            this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-            this->ClientSize = System::Drawing::Size(775, 511);
+            this->ClientSize = System::Drawing::Size(282, 255);
             this->Name = L"ParaInfo";
-            this->Text = L"运动参数";
             this->ResumeLayout(false);
 
         }
 #pragma endregion
-	};
+
+    };
 }
 
