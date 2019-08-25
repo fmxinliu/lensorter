@@ -7,11 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 //using MotionControl;
+using SharpConfig;
 
 namespace UITest
 {
     public partial class MotionControl : Form
     {
+        private DataTable dt = new DataTable();
+        private readonly string path = Application.StartupPath + "\\motion.ini";
+        //private List<ParaInfo> paras = new List<ParaInfo>();
+        //private Configuration cfg = Configuration.LoadFromFile(Application.StartupPath + "\\motion.ini");
         //private GtsMotionProxy gts = new GtsMotionProxy();
         //private ParaInfo ui = new ParaInfo();
         public MotionControl()
@@ -20,59 +25,34 @@ namespace UITest
             //gts.print();
             //ui.Show();
 
-            DataTable dt = new DataTable();
-            for (int i = 0; i < dgvTable.ColumnCount; i++)
-            {
-                dt.Columns.Add(this.dgvTable.Columns[i].Name);
-            }
+            this.CancelButton = btnExit;
 
-            dt.Rows.Add("1", "GTS-400", "5000", "7000");
-            dt.Rows.Add("1", "GTS-400", "3000", "5600");
-            dt.Rows.Add("1", "GTS-400", "6000", "8600");
-            dt.Rows.Add("1", "GTS-400", "8000", "9000");
-            dt.Rows.Add("2", "GTS-800", "5000", "7000");
-            dt.Rows.Add("2", "GTS-800", "3000", "5600");
-            dt.Rows.Add("2", "GTS-800", "6000", "8600");
-            dt.Rows.Add("2", "GTS-800", "8000", "9000");
-            dt.Rows.Add("2", "GTS-800", "5000", "7000");
-            dt.Rows.Add("2", "GTS-800", "3000", "5600");
-            dt.Rows.Add("2", "GTS-800", "6000", "8600");
-            dt.Rows.Add("2", "GTS-800", "8000", "9000");
+            LoadPara();
+            //DataTable dt = new DataTable();
+            //for (int i = 0; i < dgvTable.ColumnCount; i++)
+            //{
+            //    dt.Columns.Add(this.dgvTable.Columns[i].Name);
+            //}
 
-            this.dgvTable.DataSource = dt;
-            this.dgvTable.AddSpanHeader(6, 3, "手动");
-            this.dgvTable.AddSpanHeader(9, 3, "自动");
-            this.dgvTable.AddSpanHeader(12, 3, "复位");
+            //dt.Rows.Add("1", "GTS-400", "5000", "7000");
+            //dt.Rows.Add("1", "GTS-400", "3000", "5600");
+            //dt.Rows.Add("1", "GTS-400", "6000", "8600");
+            //dt.Rows.Add("1", "GTS-400", "8000", "9000");
+            //dt.Rows.Add("2", "GTS-800", "5000", "7000");
+            //dt.Rows.Add("2", "GTS-800", "3000", "5600");
+            //dt.Rows.Add("2", "GTS-800", "6000", "8600");
+            //dt.Rows.Add("2", "GTS-800", "8000", "9000");
+            //dt.Rows.Add("2", "GTS-800", "5000", "7000");
+            //dt.Rows.Add("2", "GTS-800", "3000", "5600");
+            //dt.Rows.Add("2", "GTS-800", "6000", "8600");
+            //dt.Rows.Add("2", "GTS-800", "8000", "9000");
+
+            //this.dgvTable.DataSource = LoadPara();
+            //this.dgvTable.AddSpanHeader(6, 3, "手动");
+            //this.dgvTable.AddSpanHeader(9, 3, "自动");
+            //this.dgvTable.AddSpanHeader(12, 3, "复位");
 
             this.MinimumSize = new Size(1024, 600);
-        }
-
-        private void dgvTable_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            //if (e.RowIndex == -1 || e.ColumnIndex < 3)
-            //{
-            //    return;
-            //}
-
-            //Console.WriteLine("MouseEnter");
-
-            //if (e.RowIndex == dgvTable.CurrentCell.RowIndex || e.ColumnIndex == dgvTable.CurrentCell.ColumnIndex)
-            //{
-            //    dgvTable[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.White;
-            //}
-            
-            //this.Cursor = e.ColumnIndex < 3 ? Cursors.Hand : Cursors.Default;
-        }
-
-        private void dgvTable_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
-        {
-            //if (e.RowIndex == -1 || e.ColumnIndex < 3)
-            //{
-            //    return;
-            //}
-
-            //Console.WriteLine("MouseLeave");
-            //dgvTable[e.ColumnIndex, e.RowIndex].Style.BackColor = dgvTable.RowTemplate.DefaultCellStyle.BackColor;
         }
 
         private void dgvTable_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
@@ -203,9 +183,71 @@ namespace UITest
 
         private void MotionControl_SizeChanged(object sender, EventArgs e)
         {
-            panel2.Size = new Size(this.Size.Width / 2, panel2.Size.Height);
-            panel3.Size = new Size(this.Size.Width / 2, panel2.Size.Height);
-            panel3.Location = new Point(panel2.Size.Width, panel2.Location.Y);
+            panel2.Size = new Size(this.Size.Width / 2 - 2, panel2.Size.Height);
+            panel3.Size = new Size(this.Size.Width / 2 - 2, panel2.Size.Height);
+            panel3.Location = new Point(panel2.Size.Width - 2, panel2.Location.Y);
+        }
+
+        private DataTable LoadPara()
+        {
+            dt = new DataTable();
+            //DataTable dt = new DataTable();
+            for (int i = 0; i < dgvTable.ColumnCount; i++)
+            {
+                dt.Columns.Add(this.dgvTable.Columns[i].Name);
+            }
+
+            Configuration cfg = Configuration.LoadFromFile(path);
+            //List<ParaInfo> paras = new List<ParaInfo>();
+            for (int i = 1; i <= 12; i++)
+            {
+                ParaInfo pi = cfg["A" + i].ToObject<ParaInfo>();
+                //paras.Add(pi);
+                dt.Rows.Add(pi.ToArray());
+            }
+
+            this.dgvTable.DataSource = dt;
+            this.dgvTable.AddSpanHeader(6, 3, "手动");
+            this.dgvTable.AddSpanHeader(9, 3, "自动");
+            this.dgvTable.AddSpanHeader(12, 3, "复位");
+
+            this.tbxCfg400.Text = cfg["Path"]["cfg400"].StringValue;
+            this.tbxCfg800.Text = cfg["Path"]["cfg800"].StringValue;
+
+            return dt;
+        }
+
+        private void SavePara()
+        {
+            Configuration cfg = new Configuration();
+
+            for (int r = 0; r < dt.Rows.Count; r++)
+            {
+                for (int c = 0; c < dt.Columns.Count; c++)
+                {
+                    string s = dt.Rows[r][c].ToString();
+                    cfg["A" + (r + 1)][dt.Columns[c].ColumnName].StringValue = dt.Rows[r][c].ToString();
+                }
+            }
+
+            cfg["Path"]["cfg400"].StringValue = this.tbxCfg400.Text;
+            cfg["Path"]["cfg800"].StringValue = this.tbxCfg800.Text;
+            cfg.SaveToFile(path);
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            LoadPara();
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            SavePara();
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
