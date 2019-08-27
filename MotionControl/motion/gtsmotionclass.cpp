@@ -29,9 +29,9 @@ short GTSMotionClass::ResetCard()
     return GT_Reset();
 }
 
-short GetCardNo(short index)
+short GTSMotionClass::GetCardNo(short *index)
 {
-    return GT_GetCardNo(&index); // [0, 15]
+    return GT_GetCardNo(index); // [0, 15]
 }
 
 short GTSMotionClass::SetCardNo(short index)
@@ -92,7 +92,7 @@ short GTSMotionClass::HomeInit()
     return GT_HomeInit();
 }
 
-short GTSMotionClass::JogMove(int nAixID, int nSpeed, double nACC, double nDEC, double nSmooth)
+short GTSMotionClass::JogMove(int nAixID, double nSpeed, double nACC, double nDEC, double nSmooth)
 {
     nAixID += 1;
     short sRtn = 0;
@@ -116,7 +116,7 @@ short GTSMotionClass::JogMove(int nAixID, int nSpeed, double nACC, double nDEC, 
     return sRtn;
 }
 
-short GTSMotionClass::P2PMove(int nAixID, long pos, int nSpeed, double nACC, double nDEC, short nSmoothTime)
+short GTSMotionClass::P2PMove(int nAixID, long pos, double nSpeed, double nACC, double nDEC, short nSmoothTime)
 {
     nAixID += 1;
     TTrapPrm trap;
@@ -148,7 +148,7 @@ short GTSMotionClass::P2PMove(int nAixID, long pos, int nSpeed, double nACC, dou
     return sRtn;
 }
 
-short GTSMotionClass::P2PMoveWaitFinished(int nAixID, long pos, int nSpeed, double nACC, double nDEC, short nSmoothTime)
+short GTSMotionClass::P2PMoveWaitFinished(int nAixID, long pos, double nSpeed, double nACC, double nDEC, short nSmoothTime)
 {
     nAixID += 1;
     TTrapPrm trap;
@@ -213,14 +213,13 @@ bool GTSMotionClass::GetHomeDone(int axisID)
     return false;
 }
 
-double* GTSMotionClass::ReadEncodePos(int nStartInex, int nCount)
+short GTSMotionClass::ReadEncodePos(int nStartInex, int nCount, double *pos)
 {
     short sRtn = 0;
-    double *pos = new double[nCount];
     memset(pos, 0, sizeof(double)*nCount);
     sRtn = GT_GetEncPos(nStartInex, pos, nCount);
     
-    return pos;
+    return sRtn;
 }
 
 short GTSMotionClass::SetDO(int port,int value)
