@@ -14,9 +14,7 @@ GTSMotionClass::~GTSMotionClass(void)
 
 short GTSMotionClass::OpenCard()
 {
-    short sRtn;
-    sRtn = GT_Open(0,0);
-    return sRtn;
+    return GT_Open(0,0);
 }
 
 short GTSMotionClass::CloseCard()

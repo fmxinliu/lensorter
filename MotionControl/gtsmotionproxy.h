@@ -6,6 +6,7 @@
 using namespace System;
 using namespace msclr::interop;
 
+class IOExtension;
 class GTSMotionClass;
 namespace MotionControl {
 
@@ -54,6 +55,7 @@ namespace MotionControl {
         short m_cardIdx;
         short m_axisNum;
         GTSMotionClass *gts;
+        static IOExtension *io;
     };
 }
 

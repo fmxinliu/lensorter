@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "gtsmotionproxy.h"
 #include "gtsmotionclass.h"
+#include "ioextension.h"
 #include <iostream>
 
 using namespace std;
@@ -16,11 +17,14 @@ GtsMotionProxy::GtsMotionProxy(short cardIdx, short axisNum)
     if (!(axisNum > 0 && axisNum <= 8)) {
         throw gcnew Exception("运动卡轴数{1-8}超出范围");
     }
+
+    io = new IOExtension();
 }
 
 GtsMotionProxy::~GtsMotionProxy(void)
 {
-    delete gts;
+    delete io; io = NULL;
+    delete gts; gts = NULL;
 }
 
 bool GtsMotionProxy::CheckAxisNo(short axisIdx)
@@ -40,7 +44,7 @@ bool GtsMotionProxy::SwitchCardNo()
 
 bool GtsMotionProxy::OpenCard()
 {
-    return SwitchCardNo() && !gts->OpenCard();
+    return SwitchCardNo() && !gts->OpenCard() && !io->Open();
 }
 
 bool GtsMotionProxy::CloseCard()

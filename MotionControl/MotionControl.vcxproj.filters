@@ -39,6 +39,9 @@
     <ClCompile Include="test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="motion\ioextension.cpp">
+      <Filter>头文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -56,6 +59,9 @@
     <ClInclude Include="test.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="motion\ioextension.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="app.rc">
@@ -63,7 +69,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="paraInfo.resX">
+    <EmbeddedResource Include="test.resx">
       <Filter>资源文件</Filter>
     </EmbeddedResource>
   </ItemGroup>

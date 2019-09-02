@@ -7,28 +7,28 @@
 
 namespace MotionControl {
 
-	using namespace System;
-	using namespace System::ComponentModel;
-	using namespace System::Collections;
-	using namespace System::Windows::Forms;
-	using namespace System::Data;
-	using namespace System::Drawing;
+    using namespace System;
+    using namespace System::ComponentModel;
+    using namespace System::Collections;
+    using namespace System::Windows::Forms;
+    using namespace System::Data;
+    using namespace System::Drawing;
     using namespace msclr::interop;
     using namespace System::Runtime::InteropServices;
 
 
-	/// <summary>
-	/// Test 摘要
-	/// </summary>
-	public ref class Test : public System::Windows::Forms::Form
-	{
-	public:
-		Test(void)
-		{
-			InitializeComponent();
-			//
-			//TODO: 在此处添加构造函数代码
-			//
+    /// <summary>
+    /// Test 摘要
+    /// </summary>
+    public ref class Test : public System::Windows::Forms::Form
+    {
+    public:
+        Test(void)
+        {
+            InitializeComponent();
+            //
+            //TODO: 在此处添加构造函数代码
+            //
 
             gts = new GTSMotionClass();
 
@@ -37,20 +37,20 @@ namespace MotionControl {
             tbxVel->Text = "1";
             tbxAcc->Text = "0.1";
             tbxDec->Text = "0.1";
-		}
+        }
 
-	protected:
-		/// <summary>
-		/// 清理所有正在使用的资源。
-		/// </summary>
-		~Test()
-		{
-			if (components)
-			{
-				delete components;
-			}
+    protected:
+        /// <summary>
+        /// 清理所有正在使用的资源。
+        /// </summary>
+        ~Test()
+        {
+            if (components)
+            {
+                delete components;
+            }
 
-		    delete gts;
+            delete gts;
         }
 
 #pragma region 易错点
@@ -99,19 +99,19 @@ namespace MotionControl {
 
 
 
-	private:
-		/// <summary>
-		/// 必需的设计器变量。
-		/// </summary>
-		System::ComponentModel::Container ^components;
+    private:
+        /// <summary>
+        /// 必需的设计器变量。
+        /// </summary>
+        System::ComponentModel::Container ^components;
 
 #pragma region Windows Form Designer generated code
-		/// <summary>
-		/// 设计器支持所需的方法 - 不要
-		/// 使用代码编辑器修改此方法的内容。
-		/// </summary>
-		void InitializeComponent(void)
-		{
+        /// <summary>
+        /// 设计器支持所需的方法 - 不要
+        /// 使用代码编辑器修改此方法的内容。
+        /// </summary>
+        void InitializeComponent(void)
+        {
             this->btnClose = (gcnew System::Windows::Forms::Button());
             this->btnOpen = (gcnew System::Windows::Forms::Button());
             this->tbxVel = (gcnew System::Windows::Forms::TextBox());
