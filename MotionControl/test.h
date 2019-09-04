@@ -39,6 +39,10 @@ namespace MotionControl {
             tbxDec->Text = "0.1";
         }
 
+        int StringToInt(String ^s);
+        double StringToDouble(String ^s);
+        const char* StringToChars(String ^s);
+
     protected:
         /// <summary>
         /// 清理所有正在使用的资源。
@@ -51,34 +55,6 @@ namespace MotionControl {
             }
 
             delete gts;
-        }
-
-#pragma region 易错点
-        const char* StringToChars(String ^s)
-        {
-            std::string s1 = marshal_as<std::string>(s); // OK
-            const char* str = marshal_as<std::string>(s).c_str(); // FAIL !!!
-            return str;
-        }
-#pragma endregion
-
-        int StringToInt(String ^s)
-        {
-            // marshal_as当返回的对象需要显式内存清理时，就需要基于marshal_context上下文的封送了
-            marshal_context ^mc = gcnew marshal_context();
-            const char* str = mc->marshal_as<const char*>(s);
-            int value = _ttoi(str);
-            delete mc;  // 当marshal_context删除后，任何在封送调用期间分配的内存都将被释放
-            return value;
-        }
-
-        double StringToDouble(String ^s)
-        {
-            IntPtr ip = Marshal::StringToHGlobalAnsi(s); // 转为非托管内存
-            const char* str = static_cast<const char*>(ip.ToPointer());
-            double value = _ttof(str);
-            Marshal::FreeHGlobal(ip); // 释放内存
-            return value;
         }
 
     private: GTSMotionClass *gts;
@@ -311,7 +287,6 @@ namespace MotionControl {
                      gts->JogMove(nAixID, -1 * nSpeed, nACC, nDEC, nSmooth);
                  }
              }
-
     private: System::Void btnJog_MouseUp(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
                 gts->StopMove(cbxSelectAxis->SelectedIndex, 0);
              }

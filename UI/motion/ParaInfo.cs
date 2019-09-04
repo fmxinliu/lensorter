@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UITest
+namespace UI
 {
     public class ParaInfo
     {
@@ -31,9 +31,9 @@ namespace UITest
 
         public long AxisMoveVel { get; set; }
 
-        public int AxisResetMode { get; set; }
+        public string AxisResetMode { get; set; }
 
-        public int AxisResetDir { get; set; }
+        public string AxisResetDir { get; set; }
 
         public bool AxisResetSetZero { get; set; }
 

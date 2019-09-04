@@ -10,6 +10,8 @@ using System.Collections;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
+// 源码路径: https://group.cnblogs.com/topic/40730.html
+
 namespace CCL
 {
     /// <summary>

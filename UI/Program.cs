@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace UITest
+namespace UI
 {
     static class Program
     {
@@ -15,8 +15,8 @@ namespace UITest
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new MotionControl());
-            Application.Run(new Form1());
+            Application.Run(new MotionControl());
+            //Application.Run(new UITest.RowMergeView());
         }
     }
 }

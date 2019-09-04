@@ -1,4 +1,4 @@
-﻿namespace UITest
+﻿namespace UI
 {
     partial class MotionControl
     {
@@ -45,6 +45,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnExit = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnReset = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tbxCfg400 = new System.Windows.Forms.TextBox();
@@ -52,7 +53,6 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.lblCfg800 = new System.Windows.Forms.Label();
             this.tbxCfg800 = new System.Windows.Forms.TextBox();
-            this.btnReset = new System.Windows.Forms.Button();
             this.dgvTable = new CCL.RowMergeView();
             this.CardID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CardName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -78,7 +78,7 @@
             // btnExit
             // 
             this.btnExit.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnExit.Location = new System.Drawing.Point(829, 12);
+            this.btnExit.Location = new System.Drawing.Point(892, 12);
             this.btnExit.Margin = new System.Windows.Forms.Padding(4);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(100, 29);
@@ -99,6 +99,18 @@
             this.panel1.Size = new System.Drawing.Size(1345, 54);
             this.panel1.TabIndex = 1;
             // 
+            // btnReset
+            // 
+            this.btnReset.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnReset.Location = new System.Drawing.Point(324, 12);
+            this.btnReset.Margin = new System.Windows.Forms.Padding(4);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(100, 29);
+            this.btnReset.TabIndex = 2;
+            this.btnReset.Text = "重置";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
             // btnSave
             // 
             this.btnSave.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -113,7 +125,7 @@
             // 
             // panel2
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.Controls.Add(this.tbxCfg400);
             this.panel2.Controls.Add(this.lblCfg400);
@@ -173,18 +185,6 @@
             this.tbxCfg800.Size = new System.Drawing.Size(518, 25);
             this.tbxCfg800.TabIndex = 6;
             // 
-            // btnReset
-            // 
-            this.btnReset.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnReset.Location = new System.Drawing.Point(391, 12);
-            this.btnReset.Margin = new System.Windows.Forms.Padding(4);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(100, 29);
-            this.btnReset.TabIndex = 2;
-            this.btnReset.Text = "重置";
-            this.btnReset.UseVisualStyleBackColor = true;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
-            // 
             // dgvTable
             // 
             this.dgvTable.AllowUserToAddRows = false;
@@ -236,6 +236,7 @@
             this.dgvTable.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTable_CellEndEdit);
             this.dgvTable.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvTable_CellMouseClick);
             this.dgvTable.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvTable_CellMouseDoubleClick);
+            this.dgvTable.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvTable_EditingControlShowing);
             // 
             // CardID
             // 
@@ -289,11 +290,13 @@
             // AxisEnable
             // 
             this.AxisEnable.DataPropertyName = "AxisEnable";
+            this.AxisEnable.FalseValue = "False";
             this.AxisEnable.HeaderText = "使能";
             this.AxisEnable.Name = "AxisEnable";
             this.AxisEnable.ReadOnly = true;
             this.AxisEnable.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.AxisEnable.ToolTipText = "是否启用该轴";
+            this.AxisEnable.TrueValue = "True";
             this.AxisEnable.Width = 60;
             // 
             // AxisPausePerMM
@@ -312,6 +315,7 @@
             this.AxisJogAcc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.AxisJogAcc.DataPropertyName = "AxisJogAcc";
             dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.NullValue = "0";
             this.AxisJogAcc.DefaultCellStyle = dataGridViewCellStyle7;
             this.AxisJogAcc.HeaderText = "加速度";
             this.AxisJogAcc.Name = "AxisJogAcc";
@@ -323,6 +327,7 @@
             this.AxisJogDec.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.AxisJogDec.DataPropertyName = "AxisJogDec";
             dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.NullValue = "0";
             this.AxisJogDec.DefaultCellStyle = dataGridViewCellStyle8;
             this.AxisJogDec.HeaderText = "减速度";
             this.AxisJogDec.Name = "AxisJogDec";
@@ -334,6 +339,7 @@
             this.AxisJogVel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.AxisJogVel.DataPropertyName = "AxisJogVel";
             dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.NullValue = "0";
             this.AxisJogVel.DefaultCellStyle = dataGridViewCellStyle9;
             this.AxisJogVel.HeaderText = "速度";
             this.AxisJogVel.Name = "AxisJogVel";
@@ -345,6 +351,7 @@
             this.AixMoveAcc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.AixMoveAcc.DataPropertyName = "AixMoveAcc";
             dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle10.NullValue = "0";
             this.AixMoveAcc.DefaultCellStyle = dataGridViewCellStyle10;
             this.AixMoveAcc.HeaderText = "加速度";
             this.AixMoveAcc.Name = "AixMoveAcc";
@@ -356,6 +363,7 @@
             this.AxisMoveDec.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.AxisMoveDec.DataPropertyName = "AxisMoveDec";
             dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle11.NullValue = "0";
             this.AxisMoveDec.DefaultCellStyle = dataGridViewCellStyle11;
             this.AxisMoveDec.HeaderText = "减速度";
             this.AxisMoveDec.Name = "AxisMoveDec";
@@ -367,6 +375,7 @@
             this.AxisMoveVel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.AxisMoveVel.DataPropertyName = "AxisMoveVel";
             dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle12.NullValue = "0";
             this.AxisMoveVel.DefaultCellStyle = dataGridViewCellStyle12;
             this.AxisMoveVel.HeaderText = "速度";
             this.AxisMoveVel.Name = "AxisMoveVel";
@@ -382,9 +391,8 @@
             this.AxisResetMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AxisResetMode.HeaderText = "模式";
             this.AxisResetMode.Items.AddRange(new object[] {
-            "0",
-            "1",
-            "2"});
+            "Home",
+            "Index"});
             this.AxisResetMode.Name = "AxisResetMode";
             this.AxisResetMode.ReadOnly = true;
             this.AxisResetMode.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -399,8 +407,8 @@
             this.AxisResetDir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AxisResetDir.HeaderText = "方向";
             this.AxisResetDir.Items.AddRange(new object[] {
-            "0",
-            "1"});
+            "正向",
+            "反向"});
             this.AxisResetDir.Name = "AxisResetDir";
             this.AxisResetDir.ReadOnly = true;
             this.AxisResetDir.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -409,10 +417,12 @@
             // AxisResetSetZero
             // 
             this.AxisResetSetZero.DataPropertyName = "AxisResetSetZero";
+            this.AxisResetSetZero.FalseValue = "False";
             this.AxisResetSetZero.HeaderText = "置零";
             this.AxisResetSetZero.Name = "AxisResetSetZero";
             this.AxisResetSetZero.ReadOnly = true;
             this.AxisResetSetZero.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.AxisResetSetZero.TrueValue = "True";
             this.AxisResetSetZero.Width = 60;
             // 
             // MotionControl
@@ -426,6 +436,7 @@
             this.Controls.Add(this.panel1);
             this.Name = "MotionControl";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MotionControl_FormClosing);
             this.SizeChanged += new System.EventHandler(this.MotionControl_SizeChanged);
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);

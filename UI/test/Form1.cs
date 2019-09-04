@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace UITest
 {
-    public partial class Form1 : Form
+    public partial class RowMergeView : Form
     {
-        public Form1()
+        public RowMergeView()
         {
             InitializeComponent();
             this.CancelButton = this.button1;
@@ -28,7 +28,7 @@ namespace UITest
             this.rowMergeView1.DataSource = dt;
             this.rowMergeView1.ColumnHeadersHeight = 40;
             this.rowMergeView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.rowMergeView1.AddSpanHeader(2, 2, "XXXX");
+            this.rowMergeView1.AddSpanHeader(2, 2, "平均工资");
 
             /* Name 为 Column1 的 同名单元格合并 */
             this.rowMergeView1.MergeColumnNames.Add("Column1");
