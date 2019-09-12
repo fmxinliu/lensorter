@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="gts">
+      <UniqueIdentifier>{817fb997-c3ff-4452-a456-0d0288275787}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="extio">
+      <UniqueIdentifier>{13d84295-71ae-475f-aa6e-d8e49d83aa6f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -21,26 +27,29 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MotionControl.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="AssemblyInfo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="motion\gtsmotionclass.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="gts\gtsmotionclass.cpp">
+      <Filter>gts</Filter>
+    </ClCompile>
+    <ClCompile Include="extio\ioextension.cpp">
+      <Filter>extio</Filter>
     </ClCompile>
     <ClCompile Include="gtsmotionproxy.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="test.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="motion\ioextension.cpp">
-      <Filter>头文件</Filter>
+    <ClCompile Include="gtscontrol.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="iocontrol.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,16 +59,25 @@
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="motion\gtsmotionclass.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="gts\gtsmotionclass.h">
+      <Filter>gts</Filter>
+    </ClInclude>
+    <ClInclude Include="gts\gts.h">
+      <Filter>gts</Filter>
+    </ClInclude>
+    <ClInclude Include="extio\extmdl.h">
+      <Filter>extio</Filter>
+    </ClInclude>
+    <ClInclude Include="extio\ioextension.h">
+      <Filter>extio</Filter>
     </ClInclude>
     <ClInclude Include="gtsmotionproxy.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="test.h">
+    <ClInclude Include="gtscontrol.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="motion\ioextension.h">
+    <ClInclude Include="iocontrol.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -69,7 +87,10 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="test.resx">
+    <EmbeddedResource Include="gtscontrol.resx">
+      <Filter>资源文件</Filter>
+    </EmbeddedResource>
+    <EmbeddedResource Include="iocontrol.resx">
       <Filter>资源文件</Filter>
     </EmbeddedResource>
   </ItemGroup>

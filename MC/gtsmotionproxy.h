@@ -8,13 +8,13 @@ using namespace msclr::interop;
 
 class IOExtension;
 class GTSMotionClass;
-namespace MotionControl {
+namespace MC {
 
-    public ref class GtsMotionProxy
+    public ref class GTSMotionProxy
     {
     public:
-        GtsMotionProxy(short cardIdx, short axisNum);
-        virtual ~GtsMotionProxy(void);
+        GTSMotionProxy(short cardIdx, short axisNum, short extmdlNum);
+        virtual ~GTSMotionProxy(void);
 
         bool OpenCard();
         bool CloseCard();
@@ -35,13 +35,18 @@ namespace MotionControl {
         bool GetHomeDone(short axisIdx);
 
         // Õ£÷π
+        bool Stop();
         bool Stop(short axisIdx);
         bool EmgStop(short axisIdx);
 
         // IO
-        int ReadDi(short port);
-        int ReadDo(short port);
-        bool SetDo(short port, short value);
+        bool ReadDi(short port);
+        bool ReadDo(short port);
+        bool SetDo(short port, bool value);
+
+        // ¿©’π IO
+        bool ReadDi(short mdl, short port);
+        bool SetDo(short mdl, short port, bool value);
 
         // Œª÷√
         bool ReadAxisPos(short axisIdx, array<double>^ values);
@@ -49,13 +54,12 @@ namespace MotionControl {
 
     private:
         bool SwitchCardNo();
-        bool CheckAxisNo(short axisIdx);
 
     private:
         short m_cardIdx;
         short m_axisNum;
         GTSMotionClass *gts;
-        static IOExtension *io;
+        IOExtension *io;
     };
 }
 

@@ -49,11 +49,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="motion\MotionControl.cs">
+    <Compile Include="motion\AxisSetting.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="motion\MotionControl.designer.cs">
-      <DependentUpon>MotionControl.cs</DependentUpon>
+    <Compile Include="motion\AxisSetting.designer.cs">
+      <DependentUpon>AxisSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="motion\IoSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="motion\IoSetting.Designer.cs">
+      <DependentUpon>IoSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="motion\Motion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="motion\Motion.Designer.cs">
+      <DependentUpon>Motion.cs</DependentUpon>
     </Compile>
     <Compile Include="motion\ParaInfo.cs" />
     <Compile Include="Program.cs" />
@@ -64,8 +76,14 @@
     <Compile Include="test\Form1.designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="motion\MotionControl.resx">
-      <DependentUpon>MotionControl.cs</DependentUpon>
+    <EmbeddedResource Include="motion\AxisSetting.resx">
+      <DependentUpon>AxisSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="motion\IoSetting.resx">
+      <DependentUpon>IoSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="motion\Motion.resx">
+      <DependentUpon>Motion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -99,9 +117,9 @@
       <Project>{6F698B39-6B46-4251-AD14-E441257E2C24}</Project>
       <Name>CCL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MotionControl\MotionControl.vcxproj">
-      <Project>{161AC2E2-925B-468E-997C-7CD9A39A84A1}</Project>
-      <Name>MotionControl</Name>
+    <ProjectReference Include="..\MC\MC.vcxproj">
+      <Project>{09C2D844-435D-455F-85C0-A80FC4EBB806}</Project>
+      <Name>MC</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

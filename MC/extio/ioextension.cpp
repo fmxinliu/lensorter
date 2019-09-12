@@ -25,7 +25,7 @@ short IOExtension::Open()
 
     if (!rtn) {
         GT_LoadExtConfig f = (GT_LoadExtConfig)GetProcAddress(hmodule, "GT_LoadExtConfig");
-        rtn = f("ExtMdl1.cfg");
+        rtn = f("X:\\ExtMdl1.cfg");
         if (!rtn) {
             GT_SetExtMdlMode f = (GT_SetExtMdlMode)GetProcAddress(hmodule, "GT_SetExtMdlMode");
             rtn = f(1); // 设置模块的工作方式为内部模式
@@ -56,14 +56,17 @@ short IOExtension::Switch(short card)
     return f(card);
 }
 
-short IOExtension::ReadDi(short mdl,short index, unsigned short *pValue)
+bool IOExtension::ReadDi(short mdl,short index)
 {
+    unsigned short value = 0;
     GT_GetExtIoBit f = (GT_GetExtIoBit)GetProcAddress(hmodule, "GT_GetExtIoBit");
-    return f(mdl, index, pValue);
+    short sRtn = f(mdl, index, &value);
+    return !sRtn && (value != 1); // 低电平有效
 }
 
-short IOExtension::SetDo(short mdl, short index, unsigned short value)
+short IOExtension::SetDo(short mdl, short index, bool value)
 {
     GT_SetExtIoBit f = (GT_SetExtIoBit)GetProcAddress(hmodule, "GT_SetExtIoBit");
-    return f(mdl, index, value);
+    short sRtn = f(mdl, index, value);
+    return sRtn;
 }

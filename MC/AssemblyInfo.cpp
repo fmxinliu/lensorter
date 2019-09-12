@@ -14,7 +14,7 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyTitleAttribute("MotionControl")];
 [assembly:AssemblyDescriptionAttribute("")];
 [assembly:AssemblyConfigurationAttribute("")];
-[assembly:AssemblyCompanyAttribute("Microsoft")];
+[assembly:AssemblyCompanyAttribute("")];
 [assembly:AssemblyProductAttribute("MotionControl")];
 [assembly:AssemblyCopyrightAttribute("Copyright (c) Microsoft 2019")];
 [assembly:AssemblyTrademarkAttribute("")];

@@ -1,6 +1,6 @@
-﻿namespace UI
+﻿namespace UI.motion
 {
-    partial class MotionControl
+    partial class AxisSetting
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MotionControl));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AxisSetting));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -425,7 +425,7 @@
             this.AxisResetSetZero.TrueValue = "True";
             this.AxisResetSetZero.Width = 60;
             // 
-            // MotionControl
+            // AxisSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -434,8 +434,8 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.dgvTable);
             this.Controls.Add(this.panel1);
-            this.Name = "MotionControl";
-            this.Text = "Form1";
+            this.Name = "AxisSetting";
+            this.Text = "轴配置";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MotionControl_FormClosing);
             this.SizeChanged += new System.EventHandler(this.MotionControl_SizeChanged);
             this.panel1.ResumeLayout(false);

@@ -1,9 +1,10 @@
-// MotionControl.cpp: 主项目文件。
+// MC.cpp: 主项目文件。
 
 #include "stdafx.h"
-#include "test.h"
+#include "gtscontrol.h"
+#include "iocontrol.h"
 
-using namespace MotionControl;
+using namespace MC;
 
 [STAThreadAttribute]
 int main(array<System::String ^> ^args)
@@ -13,6 +14,6 @@ int main(array<System::String ^> ^args)
     Application::SetCompatibleTextRenderingDefault(false); 
 
     // 创建主窗口并运行它
-    Application::Run(gcnew Test());
+    Application::Run(gcnew IOControl());
     return 0;
 }

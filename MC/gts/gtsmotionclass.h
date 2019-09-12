@@ -37,12 +37,12 @@ public:
     short StopMove(int mask, int mode);
     void StopMultiMove(int nAixNum);
     void EmgMultiMove(int nAixNum);
-    bool GetEmgStatus(int axisID) ;
+    bool GetEmgStatus(int axisID) ; // [0, 3/7]
 
     // IO
-    int ReadDI(int port);
-    int ReadDO(int port);
-    short SetDO(int port, int value);
+    bool ReadDi(short port); // [0, 15]
+    bool ReadDo(short port);
+    short SetDo(short port, bool value);
 
     short ReadEncodePos(int nStartInex, int nCount, double *pos); // 读取编码器位置
 };

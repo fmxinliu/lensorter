@@ -7,17 +7,16 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Text;
 using System.Text.RegularExpressions;
-using MotionControl;
 using SharpConfig;
 
 
-namespace UI
+namespace UI.motion
 {
-    public partial class MotionControl : Form
+    public partial class AxisSetting : Form
     {
         private DataTable dt, rawdt;
         private readonly string path = Application.StartupPath + "\\motion.ini";
-        public MotionControl()
+        public AxisSetting()
         {
             InitializeComponent();
 

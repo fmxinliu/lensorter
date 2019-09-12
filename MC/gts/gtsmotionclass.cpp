@@ -14,7 +14,8 @@ GTSMotionClass::~GTSMotionClass(void)
 
 short GTSMotionClass::OpenCard()
 {
-    return GT_Open(0,0);
+    short sRtn = GT_Open(0,0);
+    return 0;
 }
 
 short GTSMotionClass::CloseCard()
@@ -49,24 +50,24 @@ short GTSMotionClass::AixOff(short index)
 
 short GTSMotionClass::AixON(int nCount)
 {
-    short Rtn = 0;
+    short sRtn = 0;
     for(int i = 0; i < nCount; i++)
     {
-        Rtn = GT_AxisOn(i + 1);
+        sRtn = GT_AxisOn(i + 1);
     }
 
-    return Rtn;
+    return sRtn;
 }
 
 short GTSMotionClass::AixOFF(int nCount)
 {
-    short Rtn=0;
+    short sRtn=0;
     for(int i = 0; i < nCount; i++)
     {
-        Rtn = GT_AxisOff(i + 1);
+        sRtn = GT_AxisOff(i + 1);
     }
 
-    return Rtn;
+    return sRtn;
 }
 
 short GTSMotionClass::LoadConfig(std::string mConfigPath)
@@ -213,32 +214,32 @@ bool GTSMotionClass::GetHomeDone(int axisID)
 
 short GTSMotionClass::ReadEncodePos(int nStartInex, int nCount, double *pos)
 {
-    short sRtn = 0;
     memset(pos, 0, sizeof(double)*nCount);
-    sRtn = GT_GetEncPos(nStartInex, pos, nCount);
-    
+    short sRtn = GT_GetEncPos(nStartInex, pos, nCount);
     return sRtn;
 }
 
-short GTSMotionClass::SetDO(int port,int value)
+short GTSMotionClass::SetDo(short port, bool value)
 {
-    return GT_SetDoBit(MC_GPO, port, value);
+    short v = 1;
+    short sRtn = GT_SetDoBit(MC_GPO, port, v);
+    return sRtn;
 }
 
-int GTSMotionClass::ReadDO(int port)
+bool GTSMotionClass::ReadDo(short port)
 {
     long nValue=0;
     GT_GetDo(MC_GPO, &nValue);  // 通用输出
-    int nResult = nValue & (1<<(port));
-    return nResult;
+    long nResult = nValue & (1 << port);
+    return nResult >> port;
 }
 
-int GTSMotionClass::ReadDI(int port)
+bool GTSMotionClass::ReadDi(short port)
 {
     long nValue=0;
     GT_GetDi(MC_GPI, &nValue);  // 通用输入
-    int nResult = nValue & (1<<(port));
-    return nResult;
+    long nResult = nValue & (1 << port);
+    return nResult >> port;
 }
 
 bool GTSMotionClass::GetEmgStatus(int axisID) 

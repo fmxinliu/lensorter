@@ -5,7 +5,7 @@
 #include <iostream>
 #include <tchar.h>
 
-namespace MotionControl {
+namespace MC {
 
     using namespace System;
     using namespace System::ComponentModel;
@@ -13,17 +13,17 @@ namespace MotionControl {
     using namespace System::Windows::Forms;
     using namespace System::Data;
     using namespace System::Drawing;
-    using namespace msclr::interop;
     using namespace System::Runtime::InteropServices;
+    using namespace msclr::interop;
 
 
     /// <summary>
-    /// Test 摘要
+    /// GTSControl 摘要
     /// </summary>
-    public ref class Test : public System::Windows::Forms::Form
+    public ref class GTSControl : public System::Windows::Forms::Form
     {
     public:
-        Test(void)
+        GTSControl(void)
         {
             InitializeComponent();
             //
@@ -47,7 +47,7 @@ namespace MotionControl {
         /// <summary>
         /// 清理所有正在使用的资源。
         /// </summary>
-        ~Test()
+        ~GTSControl()
         {
             if (components)
             {
@@ -108,21 +108,21 @@ namespace MotionControl {
             // 
             this->btnClose->Location = System::Drawing::Point(397, 37);
             this->btnClose->Name = L"btnClose";
-            this->btnClose->Size = System::Drawing::Size(75, 23);
+            this->btnClose->Size = System::Drawing::Size(89, 35);
             this->btnClose->TabIndex = 43;
             this->btnClose->Text = L"关闭";
             this->btnClose->UseVisualStyleBackColor = true;
-            this->btnClose->Click += gcnew System::EventHandler(this, &Test::btnClose_Click);
+            this->btnClose->Click += gcnew System::EventHandler(this, &GTSControl::btnClose_Click);
             // 
             // btnOpen
             // 
-            this->btnOpen->Location = System::Drawing::Point(288, 37);
+            this->btnOpen->Location = System::Drawing::Point(274, 37);
             this->btnOpen->Name = L"btnOpen";
-            this->btnOpen->Size = System::Drawing::Size(75, 23);
+            this->btnOpen->Size = System::Drawing::Size(89, 35);
             this->btnOpen->TabIndex = 42;
             this->btnOpen->Text = L"打开";
             this->btnOpen->UseVisualStyleBackColor = true;
-            this->btnOpen->Click += gcnew System::EventHandler(this, &Test::btnOpen_Click);
+            this->btnOpen->Click += gcnew System::EventHandler(this, &GTSControl::btnOpen_Click);
             // 
             // tbxVel
             // 
@@ -176,23 +176,23 @@ namespace MotionControl {
             // 
             this->btnJogN->Location = System::Drawing::Point(397, 87);
             this->btnJogN->Name = L"btnJogN";
-            this->btnJogN->Size = System::Drawing::Size(75, 23);
+            this->btnJogN->Size = System::Drawing::Size(89, 35);
             this->btnJogN->TabIndex = 35;
-            this->btnJogN->Text = L"Jog-";
+            this->btnJogN->Text = L"反向";
             this->btnJogN->UseVisualStyleBackColor = true;
-            this->btnJogN->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &Test::btnJog_MouseDown);
-            this->btnJogN->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &Test::btnJog_MouseUp);
+            this->btnJogN->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &GTSControl::btnJog_MouseDown);
+            this->btnJogN->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &GTSControl::btnJog_MouseUp);
             // 
             // btnJogP
             // 
-            this->btnJogP->Location = System::Drawing::Point(288, 87);
+            this->btnJogP->Location = System::Drawing::Point(274, 87);
             this->btnJogP->Name = L"btnJogP";
-            this->btnJogP->Size = System::Drawing::Size(75, 23);
+            this->btnJogP->Size = System::Drawing::Size(89, 35);
             this->btnJogP->TabIndex = 34;
-            this->btnJogP->Text = L"Jog+";
+            this->btnJogP->Text = L"正向";
             this->btnJogP->UseVisualStyleBackColor = true;
-            this->btnJogP->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &Test::btnJog_MouseDown);
-            this->btnJogP->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &Test::btnJog_MouseUp);
+            this->btnJogP->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &GTSControl::btnJog_MouseDown);
+            this->btnJogP->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &GTSControl::btnJog_MouseUp);
             // 
             // label
             // 
@@ -232,7 +232,7 @@ namespace MotionControl {
             this->cbxSelectCard->Size = System::Drawing::Size(121, 23);
             this->cbxSelectCard->TabIndex = 30;
             // 
-            // Test
+            // GTSControl
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(8, 15);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
@@ -251,7 +251,8 @@ namespace MotionControl {
             this->Controls->Add(this->cbxSelectAxis);
             this->Controls->Add(this->label1);
             this->Controls->Add(this->cbxSelectCard);
-            this->Name = L"Test";
+            this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
+            this->Name = L"GTSControl";
             this->Text = L"运动卡调试";
             this->ResumeLayout(false);
             this->PerformLayout();
@@ -262,12 +263,14 @@ namespace MotionControl {
                  
                  gts->SetCardNo(cbxSelectCard->SelectedIndex);
                  gts->OpenCard();
-                 std::string path = cbxSelectCard->SelectedIndex ? "D:\\GTS800.cfg" : "D:\\GTS400.cfg";
-                 //gts->LoadConfig(path);
+                 std::string path = cbxSelectCard->SelectedIndex ? "X:\\GTS800.cfg" : "X:\\GTS400.cfg";
+                 gts->LoadConfig(path);
              }
     private: System::Void btnClose_Click(System::Object^  sender, System::EventArgs^  e) {
                 
                  gts->SetCardNo(cbxSelectCard->SelectedIndex); // 切换卡
+                 gts->StopMove(cbxSelectAxis->SelectedIndex, 0); // 停止运动
+                 gts->AixOff(cbxSelectAxis->SelectedIndex);
                  gts->CloseCard();
              }
     private: System::Void btnJog_MouseDown(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
@@ -280,7 +283,7 @@ namespace MotionControl {
                  double nSmooth = 0.1;
 
                  gts->AixOn(nAixID);
-                 if (button->Name == "正向") {
+                 if (button->Text == "正向") {
                      gts->JogMove(nAixID, nSpeed, nACC, nDEC, nSmooth);
                  }
                  else {

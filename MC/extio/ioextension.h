@@ -13,8 +13,8 @@ public:
     short Close();
     short Reset();
     short Switch(short card);
-    short ReadDi(short mdl,short index, unsigned short *pValue);
-    short SetDo(short mdl, short index, unsigned short value);
+    bool ReadDi(short mdl, short index); // [0, 15]
+    short SetDo(short mdl, short index, bool value);
 
 private:
     HMODULE hmodule;
