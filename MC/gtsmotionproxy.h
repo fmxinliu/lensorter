@@ -1,4 +1,4 @@
-#ifndef GTSMOTIONPROXY_H
+﻿#ifndef GTSMOTIONPROXY_H
 #define GTSMOTIONPROXY_H
 
 #include <msclr\marshal_cppstd.h>
@@ -30,11 +30,11 @@ namespace MC {
         bool P2PMove(short axisIdx, double speed, double acc, double dec, long pos/*pulse*/);
         bool P2PMoveWaitFinished(short axisIdx, double speed, double acc, double dec, long pos/*pulse*/);
 
-        // ��λ
+        // 复位
         bool HomeWithSensor(short axisIdx, double speed, double acc, long pos/*pulse*/, long offset);
         bool GetHomeDone(short axisIdx);
 
-        // ֹͣ
+        // 停止
         bool Stop();
         bool Stop(short axisIdx);
         bool EmgStop(short axisIdx);
@@ -44,11 +44,11 @@ namespace MC {
         bool ReadDo(short port);
         bool SetDo(short port, bool value);
 
-        // ��չ IO
+        // 扩展 IO
         bool ReadDi(short mdl, short port);
         bool SetDo(short mdl, short port, bool value);
 
-        // λ��
+        // 位置
         bool ReadAxisPos(short axisIdx, array<double>^ values);
         double ReadAxisPos(short axisIdx);
 

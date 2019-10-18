@@ -1,4 +1,4 @@
-#ifndef IOEXTENSION_H
+﻿#ifndef IOEXTENSION_H
 #define IOEXTENSION_H
 
 #include <Windows.h>

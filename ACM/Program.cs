@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace ACM
@@ -15,7 +14,7 @@ namespace ACM
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new demo());
+            Application.Run(new MainForm());
         }
     }
 }

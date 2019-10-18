@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "gtsmotionclass.h"
 #include <msclr\marshal_cppstd.h>
@@ -18,7 +18,7 @@ namespace MC {
 
 
     /// <summary>
-    /// GTSControl ÕªÒª
+    /// GTSControl æ‘˜è¦
     /// </summary>
     public ref class GTSControl : public System::Windows::Forms::Form
     {
@@ -27,7 +27,7 @@ namespace MC {
         {
             InitializeComponent();
             //
-            //TODO: ÔÚ´Ë´¦Ìí¼Ó¹¹Ôìº¯Êı´úÂë
+            //TODO: åœ¨æ­¤å¤„æ·»åŠ æ„é€ å‡½æ•°ä»£ç 
             //
 
             gts = new GTSMotionClass();
@@ -45,7 +45,7 @@ namespace MC {
 
     protected:
         /// <summary>
-        /// ÇåÀíËùÓĞÕıÔÚÊ¹ÓÃµÄ×ÊÔ´¡£
+        /// æ¸…ç†æ‰€æœ‰æ­£åœ¨ä½¿ç”¨çš„èµ„æºã€‚
         /// </summary>
         ~GTSControl()
         {
@@ -77,14 +77,14 @@ namespace MC {
 
     private:
         /// <summary>
-        /// ±ØĞèµÄÉè¼ÆÆ÷±äÁ¿¡£
+        /// å¿…éœ€çš„è®¾è®¡å™¨å˜é‡ã€‚
         /// </summary>
         System::ComponentModel::Container ^components;
 
 #pragma region Windows Form Designer generated code
         /// <summary>
-        /// Éè¼ÆÆ÷Ö§³ÖËùĞèµÄ·½·¨ - ²»Òª
-        /// Ê¹ÓÃ´úÂë±à¼­Æ÷ĞŞ¸Ä´Ë·½·¨µÄÄÚÈİ¡£
+        /// è®¾è®¡å™¨æ”¯æŒæ‰€éœ€çš„æ–¹æ³• - ä¸è¦
+        /// ä½¿ç”¨ä»£ç ç¼–è¾‘å™¨ä¿®æ”¹æ­¤æ–¹æ³•çš„å†…å®¹ã€‚
         /// </summary>
         void InitializeComponent(void)
         {
@@ -110,7 +110,7 @@ namespace MC {
             this->btnClose->Name = L"btnClose";
             this->btnClose->Size = System::Drawing::Size(89, 35);
             this->btnClose->TabIndex = 43;
-            this->btnClose->Text = L"¹Ø±Õ";
+            this->btnClose->Text = L"å…³é—­";
             this->btnClose->UseVisualStyleBackColor = true;
             this->btnClose->Click += gcnew System::EventHandler(this, &GTSControl::btnClose_Click);
             // 
@@ -120,7 +120,7 @@ namespace MC {
             this->btnOpen->Name = L"btnOpen";
             this->btnOpen->Size = System::Drawing::Size(89, 35);
             this->btnOpen->TabIndex = 42;
-            this->btnOpen->Text = L"´ò¿ª";
+            this->btnOpen->Text = L"æ‰“å¼€";
             this->btnOpen->UseVisualStyleBackColor = true;
             this->btnOpen->Click += gcnew System::EventHandler(this, &GTSControl::btnOpen_Click);
             // 
@@ -138,7 +138,7 @@ namespace MC {
             this->label4->Name = L"label4";
             this->label4->Size = System::Drawing::Size(37, 15);
             this->label4->TabIndex = 40;
-            this->label4->Text = L"ËÙ¶È";
+            this->label4->Text = L"é€Ÿåº¦";
             // 
             // tbxDec
             // 
@@ -154,7 +154,7 @@ namespace MC {
             this->label3->Name = L"label3";
             this->label3->Size = System::Drawing::Size(52, 15);
             this->label3->TabIndex = 38;
-            this->label3->Text = L"¼õËÙ¶È";
+            this->label3->Text = L"å‡é€Ÿåº¦";
             // 
             // tbxAcc
             // 
@@ -170,7 +170,7 @@ namespace MC {
             this->label2->Name = L"label2";
             this->label2->Size = System::Drawing::Size(52, 15);
             this->label2->TabIndex = 36;
-            this->label2->Text = L"¼ÓËÙ¶È";
+            this->label2->Text = L"åŠ é€Ÿåº¦";
             // 
             // btnJogN
             // 
@@ -178,7 +178,7 @@ namespace MC {
             this->btnJogN->Name = L"btnJogN";
             this->btnJogN->Size = System::Drawing::Size(89, 35);
             this->btnJogN->TabIndex = 35;
-            this->btnJogN->Text = L"·´Ïò";
+            this->btnJogN->Text = L"åå‘";
             this->btnJogN->UseVisualStyleBackColor = true;
             this->btnJogN->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &GTSControl::btnJog_MouseDown);
             this->btnJogN->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &GTSControl::btnJog_MouseUp);
@@ -189,7 +189,7 @@ namespace MC {
             this->btnJogP->Name = L"btnJogP";
             this->btnJogP->Size = System::Drawing::Size(89, 35);
             this->btnJogP->TabIndex = 34;
-            this->btnJogP->Text = L"ÕıÏò";
+            this->btnJogP->Text = L"æ­£å‘";
             this->btnJogP->UseVisualStyleBackColor = true;
             this->btnJogP->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &GTSControl::btnJog_MouseDown);
             this->btnJogP->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &GTSControl::btnJog_MouseUp);
@@ -201,7 +201,7 @@ namespace MC {
             this->label->Name = L"label";
             this->label->Size = System::Drawing::Size(22, 15);
             this->label->TabIndex = 33;
-            this->label->Text = L"Öá";
+            this->label->Text = L"è½´";
             // 
             // cbxSelectAxis
             // 
@@ -220,7 +220,7 @@ namespace MC {
             this->label1->Name = L"label1";
             this->label1->Size = System::Drawing::Size(22, 15);
             this->label1->TabIndex = 31;
-            this->label1->Text = L"¿¨";
+            this->label1->Text = L"å¡";
             // 
             // cbxSelectCard
             // 
@@ -253,28 +253,28 @@ namespace MC {
             this->Controls->Add(this->cbxSelectCard);
             this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
             this->Name = L"GTSControl";
-            this->Text = L"ÔË¶¯¿¨µ÷ÊÔ";
+            this->Text = L"è¿åŠ¨å¡è°ƒè¯•";
             this->ResumeLayout(false);
             this->PerformLayout();
 
         }
 #pragma endregion
     private: System::Void btnOpen_Click(System::Object^  sender, System::EventArgs^  e) {
-                 
+
                  gts->SetCardNo(cbxSelectCard->SelectedIndex);
                  gts->OpenCard();
                  std::string path = cbxSelectCard->SelectedIndex ? "X:\\GTS800.cfg" : "X:\\GTS400.cfg";
                  gts->LoadConfig(path);
              }
     private: System::Void btnClose_Click(System::Object^  sender, System::EventArgs^  e) {
-                
-                 gts->SetCardNo(cbxSelectCard->SelectedIndex); // ÇĞ»»¿¨
-                 gts->StopMove(cbxSelectAxis->SelectedIndex, 0); // Í£Ö¹ÔË¶¯
+
+                 gts->SetCardNo(cbxSelectCard->SelectedIndex); // åˆ‡æ¢å¡
+                 gts->StopMove(cbxSelectAxis->SelectedIndex, 0); // åœæ­¢è¿åŠ¨
                  gts->AixOff(cbxSelectAxis->SelectedIndex);
                  gts->CloseCard();
              }
     private: System::Void btnJog_MouseDown(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
-         
+
                  Button^ button = (Button ^)sender;
                  int nAixID = cbxSelectAxis->SelectedIndex;
                  int nSpeed = StringToInt(tbxVel->Text);
@@ -283,7 +283,7 @@ namespace MC {
                  double nSmooth = 0.1;
 
                  gts->AixOn(nAixID);
-                 if (button->Text == "ÕıÏò") {
+                 if (button->Text == "æ­£å‘") {
                      gts->JogMove(nAixID, nSpeed, nACC, nDEC, nSmooth);
                  }
                  else {
@@ -291,7 +291,7 @@ namespace MC {
                  }
              }
     private: System::Void btnJog_MouseUp(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
-                gts->StopMove(cbxSelectAxis->SelectedIndex, 0);
+                 gts->StopMove(cbxSelectAxis->SelectedIndex, 0);
              }
-};
+    };
 }

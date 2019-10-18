@@ -1,9 +1,9 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "gtscontrol.h"
 
 using namespace MC;
 
-#pragma region Ò×´í
+#pragma region æ˜“é”™
 const char* GTSControl::StringToChars(String ^s)
 {
     std::string s1 = marshal_as<std::string>(s); // OK
@@ -14,19 +14,19 @@ const char* GTSControl::StringToChars(String ^s)
 
 int GTSControl::StringToInt(String ^s)
 {
-    // marshal_asµ±·µ»ØµÄ¶ÔÏóĞèÒªÏÔÊ½ÄÚ´æÇåÀíÊ±£¬¾ÍĞèÒª»ùÓÚmarshal_contextÉÏÏÂÎÄµÄ·âËÍÁË
+    // marshal_aså½“è¿”å›çš„å¯¹è±¡éœ€è¦æ˜¾å¼å†…å­˜æ¸…ç†æ—¶ï¼Œå°±éœ€è¦åŸºäºmarshal_contextä¸Šä¸‹æ–‡çš„å°é€äº†
     marshal_context ^mc = gcnew marshal_context();
     const char* str = mc->marshal_as<const char*>(s);
     int value = _ttoi(str);
-    delete mc;  // µ±marshal_contextÉ¾³ıºó£¬ÈÎºÎÔÚ·âËÍµ÷ÓÃÆÚ¼ä·ÖÅäµÄÄÚ´æ¶¼½«±»ÊÍ·Å
+    delete mc;  // å½“marshal_contextåˆ é™¤åï¼Œä»»ä½•åœ¨å°é€è°ƒç”¨æœŸé—´åˆ†é…çš„å†…å­˜éƒ½å°†è¢«é‡Šæ”¾
     return value;
 }
 
 double GTSControl::StringToDouble(String ^s)
 {
-    IntPtr ip = Marshal::StringToHGlobalAnsi(s); // ×ªÎª·ÇÍĞ¹ÜÄÚ´æ
+    IntPtr ip = Marshal::StringToHGlobalAnsi(s); // è½¬ä¸ºéæ‰˜ç®¡å†…å­˜
     const char* str = static_cast<const char*>(ip.ToPointer());
     double value = _ttof(str);
-    Marshal::FreeHGlobal(ip); // ÊÍ·ÅÄÚ´æ
+    Marshal::FreeHGlobal(ip); // é‡Šæ”¾å†…å­˜
     return value;
 }

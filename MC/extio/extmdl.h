@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #define IO_API(FUNC) typedef short (__stdcall *FUNC)
 

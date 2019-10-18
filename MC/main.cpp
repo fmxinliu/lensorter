@@ -1,4 +1,4 @@
-// MC.cpp: Ö÷ÏîÄ¿ÎÄ¼ş¡£
+ï»¿// MC.cpp: ä¸»é¡¹ç›®æ–‡ä»¶ã€‚
 
 #include "stdafx.h"
 #include "gtscontrol.h"
@@ -9,11 +9,11 @@ using namespace MC;
 [STAThreadAttribute]
 int main(array<System::String ^> ^args)
 {
-    // ÔÚ´´½¨ÈÎºÎ¿Ø¼şÖ®Ç°ÆôÓÃ Windows XP ¿ÉÊÓ»¯Ğ§¹û
+    // åœ¨åˆ›å»ºä»»ä½•æ§ä»¶ä¹‹å‰å¯ç”¨ Windows XP å¯è§†åŒ–æ•ˆæœ
     Application::EnableVisualStyles();
     Application::SetCompatibleTextRenderingDefault(false); 
 
-    // ´´½¨Ö÷´°¿Ú²¢ÔËĞĞËü
+    // åˆ›å»ºä¸»çª—å£å¹¶è¿è¡Œå®ƒ
     Application::Run(gcnew IOControl());
     return 0;
 }

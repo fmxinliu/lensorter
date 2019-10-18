@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "iocontrol.h"
 #include <tchar.h>
 
@@ -82,11 +82,11 @@ System::Void IOControl::lblIO_Click(System::Object^ sender, System::EventArgs^ e
 
 int IOControl::StringToInt(String ^s)
 {
-    // marshal_asµ±·µ»ØµÄ¶ÔÏóĞèÒªÏÔÊ½ÄÚ´æÇåÀíÊ±£¬¾ÍĞèÒª»ùÓÚmarshal_contextÉÏÏÂÎÄµÄ·âËÍÁË
+    // marshal_aså½“è¿”å›çš„å¯¹è±¡éœ€è¦æ˜¾å¼å†…å­˜æ¸…ç†æ—¶ï¼Œå°±éœ€è¦åŸºäºmarshal_contextä¸Šä¸‹æ–‡çš„å°é€äº†
     marshal_context ^mc = gcnew marshal_context();
     const char* str = mc->marshal_as<const char*>(s);
     int value = _ttoi(str);
-    delete mc;  // µ±marshal_contextÉ¾³ıºó£¬ÈÎºÎÔÚ·âËÍµ÷ÓÃÆÚ¼ä·ÖÅäµÄÄÚ´æ¶¼½«±»ÊÍ·Å
+    delete mc;  // å½“marshal_contextåˆ é™¤åï¼Œä»»ä½•åœ¨å°é€è°ƒç”¨æœŸé—´åˆ†é…çš„å†…å­˜éƒ½å°†è¢«é‡Šæ”¾
     return value;
 }
 

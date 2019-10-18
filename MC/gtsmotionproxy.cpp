@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "gtsmotionproxy.h"
 #include "gtsmotionclass.h"
 #include "ioextension.h"
@@ -11,7 +11,7 @@ GTSMotionProxy::GTSMotionProxy(short cardIdx, short axisNum, short extmdlNum)
     : m_cardIdx(cardIdx), m_axisNum(axisNum), gts(new GTSMotionClass)
 {
     if (m_cardIdx < 0) {
-        throw gcnew Exception("ÔË¶¯¿¨ºÅ < 0");
+        throw gcnew Exception("è¿åŠ¨å¡å· < 0");
     }
 
     io = extmdlNum > 0 ? new IOExtension() : NULL;
@@ -88,7 +88,7 @@ bool GTSMotionProxy::P2PMoveWaitFinished(short axisIdx, double speed, double acc
     return SwitchCardNo() && !gts->P2PMoveWaitFinished(axisIdx, pos, speed, acc, dec, 1);
 }
 
-// ¸´Î»
+// å¤ä½
 bool GTSMotionProxy::HomeWithSensor(short axisIdx, double speed, double acc, long pos, long offset)
 {
     return SwitchCardNo() && !gts->HomeWithSensor(axisIdx, pos, speed, acc, 0);
@@ -99,7 +99,7 @@ bool GTSMotionProxy::GetHomeDone(short axisIdx)
     return SwitchCardNo() && gts->GetHomeDone(axisIdx);
 }
 
-// Í£Ö¹
+// åœæ­¢
 bool GTSMotionProxy::Stop()
 {
     bool ret = SwitchCardNo();
@@ -136,11 +136,11 @@ bool GTSMotionProxy::SetDo(short port, bool value)
 }
 //bool GTSMotionProxy::ReadDi(short port)
 //{
-//    // 0-15  ¿¨
-//    // 16-31 Ä£¿é1
-//    // 32-47 Ä£¿é2
-//    // 48-63 Ä£¿é3
-//    // 64-79 Ä£¿é4
+//    // 0-15  å¡
+//    // 16-31 æ¨¡å—1
+//    // 32-47 æ¨¡å—2
+//    // 48-63 æ¨¡å—3
+//    // 64-79 æ¨¡å—4
 //    bool value = false;
 //    if (SwitchCardNo()) {
 //        value = (port < 16) ? gts->ReadDi(port) : io->ReadDi(port / 16 - 1, port % 16);
@@ -155,7 +155,7 @@ bool GTSMotionProxy::SetDo(short port, bool value)
 //        if (port >= 0 && port < 16) {
 //            value = gts->ReadDo(port);
 //        } else {
-//            throw gcnew Exception("ÎŞ·¨»ñÈ¡À©Õ¹Ä£¿éÊä³ö¶Ë¿ÚÖµ");
+//            throw gcnew Exception("æ— æ³•è·å–æ‰©å±•æ¨¡å—è¾“å‡ºç«¯å£å€¼");
 //        }
 //    }
 //    return value;
@@ -185,7 +185,7 @@ bool GTSMotionProxy::ReadAxisPos(short axisIdx, array<double>^ values)
     bool ret = false;
     if (SwitchCardNo()) {
         int count = values->Length;
-        pin_ptr<double> pos = &values[0]; //  pin_ptr<> ¹Ì¶¨Êı×é£¬µ±±¾»ú´úÂëÖ´ĞĞ²¢·ÃÎÊÊı×éÊı¾İÊ±,À¬»øÊÕ¼¯Æ÷ÎŞ·¨»ØÊÕ
+        pin_ptr<double> pos = &values[0]; //  pin_ptr<> å›ºå®šæ•°ç»„ï¼Œå½“æœ¬æœºä»£ç æ‰§è¡Œå¹¶è®¿é—®æ•°ç»„æ•°æ®æ—¶,åƒåœ¾æ”¶é›†å™¨æ— æ³•å›æ”¶
         ret = !gts->ReadEncodePos(axisIdx, count, pos);
         //double *pos = new double[count];
         //memset(pos, 0, sizeof(double)*nCount);

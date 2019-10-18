@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
+using System.Collections.Specialized;
+using MC;
 
 namespace UI
 {
@@ -15,7 +16,7 @@ namespace UI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new UI.motion.Motion());
+            Application.Run(new MC.IOControl());
             //Application.Run(new UITest.RowMergeView());
         }
     }

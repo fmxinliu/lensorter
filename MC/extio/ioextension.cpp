@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "ioextension.h"
 #include "extmdl.h"
 
@@ -28,7 +28,7 @@ short IOExtension::Open()
         rtn = f("X:\\ExtMdl1.cfg");
         if (!rtn) {
             GT_SetExtMdlMode f = (GT_SetExtMdlMode)GetProcAddress(hmodule, "GT_SetExtMdlMode");
-            rtn = f(1); // ÉèÖÃÄ£¿éµÄ¹¤×÷·½Ê½ÎªÄÚ²¿Ä£Ê½
+            rtn = f(1); // è®¾ç½®æ¨¡å—çš„å·¥ä½œæ–¹å¼ä¸ºå†…éƒ¨æ¨¡å¼
             if (!rtn) {
                 rtn = Reset();
             }
@@ -61,7 +61,7 @@ bool IOExtension::ReadDi(short mdl,short index)
     unsigned short value = 0;
     GT_GetExtIoBit f = (GT_GetExtIoBit)GetProcAddress(hmodule, "GT_GetExtIoBit");
     short sRtn = f(mdl, index, &value);
-    return !sRtn && (value != 1); // µÍµçÆ½ÓĞĞ§
+    return !sRtn && (value != 1); // ä½ç”µå¹³æœ‰æ•ˆ
 }
 
 short IOExtension::SetDo(short mdl, short index, bool value)

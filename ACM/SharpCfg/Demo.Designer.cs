@@ -1,6 +1,6 @@
 ﻿namespace ACM
 {
-    partial class demo
+    partial class Demo
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -96,7 +96,7 @@
             this.btnSaveValue.UseVisualStyleBackColor = true;
             this.btnSaveValue.Click += new System.EventHandler(this.btnSaveValue_Click);
             // 
-            // Form1
+            // Demo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -107,7 +107,7 @@
             this.Controls.Add(this.btnLoadArray);
             this.Controls.Add(this.btnLoadClass);
             this.Controls.Add(this.btnLoadValue);
-            this.Name = "Form1";
+            this.Name = "Demo";
             this.Text = "SharpConfig";
             this.ResumeLayout(false);
 

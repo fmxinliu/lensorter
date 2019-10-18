@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using SharpConfig;
 
 namespace ACM
 {
-    public partial class demo : Form
+    public partial class Demo : Form
     {
         // 按文件名称加载配置文件
         private Configuration loadConfig = Configuration.LoadFromFile(Application.StartupPath + "\\example.ini");
@@ -18,7 +17,7 @@ namespace ACM
         //config.SaveToBinaryFile(Application.StartupPath + "\\myConfig.cfg"); // 保存到cfg格式的二进制文件
         private Configuration saveConfig = new Configuration();
 
-        public demo()
+        public Demo()
         {
             InitializeComponent();
         }

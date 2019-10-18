@@ -231,7 +231,7 @@ bool GTSMotionClass::ReadDo(short port)
     long nValue=0;
     GT_GetDo(MC_GPO, &nValue);  // 通用输出
     long nResult = nValue & (1 << port);
-    return nResult >> port;
+    return (nResult >> port) != 0;
 }
 
 bool GTSMotionClass::ReadDi(short port)
@@ -239,7 +239,7 @@ bool GTSMotionClass::ReadDi(short port)
     long nValue=0;
     GT_GetDi(MC_GPI, &nValue);  // 通用输入
     long nResult = nValue & (1 << port);
-    return nResult >> port;
+    return (nResult >> port) != 0;
 }
 
 bool GTSMotionClass::GetEmgStatus(int axisID) 
