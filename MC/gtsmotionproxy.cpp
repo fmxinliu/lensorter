@@ -35,7 +35,17 @@ bool GTSMotionProxy::SwitchCardNo()
 
 bool GTSMotionProxy::OpenCard()
 {
-    return SwitchCardNo() && !gts->OpenCard() && io && !io->Open();
+    bool ret = SwitchCardNo() && !gts->OpenCard();
+    if (!ret) {
+        printf("Card Open Fail");
+    }
+
+    if (ret && io && io->Open()) {
+        ret = false;
+        printf("IOExtense Open Fail");
+    }
+
+    return ret;
 }
 
 bool GTSMotionProxy::CloseCard()

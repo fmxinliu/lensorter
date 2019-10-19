@@ -221,8 +221,7 @@ short GTSMotionClass::ReadEncodePos(int nStartInex, int nCount, double *pos)
 
 short GTSMotionClass::SetDo(short port, bool value)
 {
-    short v = 1;
-    short sRtn = GT_SetDoBit(MC_GPO, port, v);
+    short sRtn = GT_SetDoBit(MC_GPO, port + 1, value);
     return sRtn;
 }
 

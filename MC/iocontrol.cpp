@@ -15,7 +15,7 @@ void IOControl::InitControl(System::Windows::Forms::GroupBox^ gbx, String^ iotyp
         lblIO->Location = System::Drawing::Point(30 + i % 8 * 38, 30 + i / 8 * 38);
         lblIO->Size = System::Drawing::Size(32, 32);
         lblIO->Name = iotype + (i + 1);
-        lblIO->Text = i.ToString();
+        lblIO->Text = (i + 1).ToString();
         gbx->Controls->Add(lblIO);
 
         if (iotype == L"lblOutput") {
@@ -50,7 +50,7 @@ System::Void IOControl::cbxSelectCard_SelectedIndexChanged(System::Object^ sende
 {
     if (selectedCard != cbxSelectCard->SelectedIndex) {
         selectedCard = cbxSelectCard->SelectedIndex;
-        RefreshOutput();
+        ResetMdl();
     }
 }
 
@@ -58,7 +58,7 @@ System::Void IOControl::cbxSelectMdl_SelectedIndexChanged(System::Object^ sender
 {
     if (selectedMdl != cbxSelectMdl->SelectedIndex) {
         selectedMdl = cbxSelectMdl->SelectedIndex;
-        RefreshOutput();
+        ResetMdl();
     }
 }
 
@@ -68,9 +68,10 @@ System::Void IOControl::lblIO_Click(System::Object^ sender, System::EventArgs^ e
     GTSMotionProxy^ gts = gtsControl();
 
     Label^ lblOutput = (Label ^)sender;
-    int index = StringToInt(lblOutput->Text);
+    int index = StringToInt(lblOutput->Text) - 1;
     bool value = (lblOutput->BackColor != Color::Green) ? true : false;
-    
+    System::Console::WriteLine(value);
+
     if (mdl != -1) {
         value = gts->SetDo(mdl, index, value) ? value : !value;
     } else {
@@ -109,7 +110,7 @@ void IOControl::RefreshInput()
     
     for (int i = 0; i < gbxInput->Controls->Count; i++) {
         Label^ lblOutput = (Label ^)gbxInput->Controls[i];
-        int index = StringToInt(lblOutput->Text);
+        int index = StringToInt(lblOutput->Text) - 1;
         bool value = (mdl != -1) ? gts->ReadDi(mdl, index) : gts->ReadDi(index);
         lblOutput->BackColor = value ? Color::Green : SystemColors::Control;
     }
@@ -122,9 +123,26 @@ void IOControl::RefreshOutput()
 
     for (int i = 0; i < gbxOutput->Controls->Count; i++) {
         Label^ lblOutput = (Label ^)gbxOutput->Controls[i];
-        int index = StringToInt(lblOutput->Text);
-        bool value = (mdl != -1) ? false : gts->ReadDo(index);
-        lblOutput->BackColor = value ? Color::Green : SystemColors::Control;
+        int index = StringToInt(lblOutput->Text) - 1;
+        if (mdl == -1) {
+            bool value = (mdl != -1) ? false : gts->ReadDo(index);
+            lblOutput->BackColor = value ? Color::Green : SystemColors::Control;
+        }
+    }
+}
+
+void IOControl::ResetMdl()
+{
+    int mdl = getMdl();
+    GTSMotionProxy^ gts = gtsControl();
+
+    for (int i = 0; i < gbxOutput->Controls->Count; i++) {
+        Label^ lblOutput = (Label ^)gbxOutput->Controls[i];
+        int index = StringToInt(lblOutput->Text) - 1;
+        if (mdl != -1) {
+            ////bool value = gts->SetDo(mdl, index, false);
+            lblOutput->BackColor = SystemColors::Control;
+        }
     }
 }
 
@@ -132,5 +150,6 @@ System::Void IOControl::timerRefresh_Tick(System::Object^ sender, System::EventA
 {
     timerRefresh->Stop();
     RefreshInput();
+    RefreshOutput();
     timerRefresh->Start();
 }

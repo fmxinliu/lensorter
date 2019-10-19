@@ -48,6 +48,7 @@ namespace MC {
 
     protected:
         int getMdl();
+        void ResetMdl();
         void RefreshInput();
         void RefreshOutput();
         int StringToInt(String ^s);
@@ -188,7 +189,7 @@ namespace MC {
             // IOControl
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(8, 15);
-            this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+            ////this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
             this->ClientSize = System::Drawing::Size(403, 364);
             this->Controls->Add(this->btnClose);
             this->Controls->Add(this->btnOpen);
