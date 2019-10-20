@@ -1,6 +1,15 @@
-#pragma once
+ï»¿#pragma once
 
 #include "gtsmotionproxy.h"
+
+#define GTS_400 0
+#define GTS_800 1
+#define GTS_400_AIXSNUM 4
+#define GTS_800_AIXSNUM 8
+#define GTS_400_MDLNUM 4
+#define GTS_800_MDLNUM 0
+#define IOCOUNT_PER_MDL 16
+#define GTS_CARD_NUM 2
 
 namespace MC {
 
@@ -12,7 +21,7 @@ namespace MC {
     using namespace System::Drawing;
 
     /// <summary>
-    /// iocontrol ÕªÒª
+    /// iocontrol æ‘˜è¦
     /// </summary>
     public ref class IOControl : public System::Windows::Forms::Form
     {
@@ -21,22 +30,23 @@ namespace MC {
         {
             InitializeComponent();
             //
-            //TODO: ÔÚ´Ë´¦Ìí¼Ó¹¹Ôìº¯Êı´úÂë
+            //TODO: åœ¨æ­¤å¤„æ·»åŠ æ„é€ å‡½æ•°ä»£ç 
             //
             InitControl(this->gbxInput, "lblInput");
             InitControl(this->gbxOutput, "lblOutput");
 
-            selectedCard = selectedMdl = 0;
-            this->cbxSelectCard->SelectedIndex = 0;
-            this->cbxSelectMdl->SelectedIndex = 0;
+            gts400 = gcnew GTSMotionProxy(GTS_400, GTS_400_AIXSNUM, GTS_400_MDLNUM);
+            gts800 = gcnew GTSMotionProxy(GTS_800, GTS_800_AIXSNUM, GTS_800_MDLNUM);
 
-            gts400 = gcnew GTSMotionProxy(0, 4, 4);
-            gts800 = gcnew GTSMotionProxy(1, 8, 0);
+            // æ‰©å±• IO ç¼“å­˜
+            mdlNum = GTS_400_MDLNUM + GTS_800_MDLNUM;
+            pMdlIOBuffer = new int[mdlNum];
+            memset(pMdlIOBuffer, 0, sizeof(int) * mdlNum);
         }
 
     protected:
         /// <summary>
-        /// ÇåÀíËùÓĞÕıÔÚÊ¹ÓÃµÄ×ÊÔ´¡£
+        /// æ¸…ç†æ‰€æœ‰æ­£åœ¨ä½¿ç”¨çš„èµ„æºã€‚
         /// </summary>
         ~IOControl()
         {
@@ -44,15 +54,17 @@ namespace MC {
             {
                 delete components;
             }
+
+            delete []pMdlIOBuffer;
         }
 
     protected:
-        int getMdl();
+        int GetMdl();
         void ResetMdl();
         void RefreshInput();
         void RefreshOutput();
         int StringToInt(String ^s);
-        GTSMotionProxy^ gtsControl();
+        GTSMotionProxy^ GtsControl();
 
     private:
         void InitControl(System::Windows::Forms::GroupBox^ gbx, String^ iotype);
@@ -68,34 +80,36 @@ namespace MC {
         int selectedCard;
         int selectedMdl;
 
+        int mdlNum;
+        int *pMdlIOBuffer;
+
     private:
         /// <summary>
-        /// ±ØĞèµÄÉè¼ÆÆ÷±äÁ¿¡£
+        /// å¿…éœ€çš„è®¾è®¡å™¨å˜é‡ã€‚
         /// </summary>
         System::ComponentModel::IContainer^  components;
-        System::Windows::Forms::GroupBox^  gbxOutput;
-        System::Windows::Forms::GroupBox^  gbxInput;
-        System::Windows::Forms::Label^  label1;
-        System::Windows::Forms::Label^  label2;
-        System::Windows::Forms::ComboBox^  cbxSelectCard;
-        System::Windows::Forms::ComboBox^  cbxSelectMdl;
+        System::Windows::Forms::Label^  lblCard;
+        System::Windows::Forms::Label^  lblIoMdl;
         System::Windows::Forms::Button^  btnClose;
         System::Windows::Forms::Button^  btnOpen;
+        System::Windows::Forms::GroupBox^  gbxOutput;
+        System::Windows::Forms::GroupBox^  gbxInput;
+        System::Windows::Forms::ComboBox^  cbxSelectCard;
+        System::Windows::Forms::ComboBox^  cbxSelectMdl;
         System::Windows::Forms::Timer^  timerRefresh;
-             
 
 #pragma region Windows Form Designer generated code
         /// <summary>
-        /// Éè¼ÆÆ÷Ö§³ÖËùĞèµÄ·½·¨ - ²»Òª
-        /// Ê¹ÓÃ´úÂë±à¼­Æ÷ĞŞ¸Ä´Ë·½·¨µÄÄÚÈİ¡£
+        /// è®¾è®¡å™¨æ”¯æŒæ‰€éœ€çš„æ–¹æ³• - ä¸è¦
+        /// ä½¿ç”¨ä»£ç ç¼–è¾‘å™¨ä¿®æ”¹æ­¤æ–¹æ³•çš„å†…å®¹ã€‚
         /// </summary>
         void InitializeComponent(void)
         {
             this->components = (gcnew System::ComponentModel::Container());
             this->gbxInput = (gcnew System::Windows::Forms::GroupBox());
             this->gbxOutput = (gcnew System::Windows::Forms::GroupBox());
-            this->label1 = (gcnew System::Windows::Forms::Label());
-            this->label2 = (gcnew System::Windows::Forms::Label());
+            this->lblCard = (gcnew System::Windows::Forms::Label());
+            this->lblIoMdl = (gcnew System::Windows::Forms::Label());
             this->cbxSelectCard = (gcnew System::Windows::Forms::ComboBox());
             this->cbxSelectMdl = (gcnew System::Windows::Forms::ComboBox());
             this->btnClose = (gcnew System::Windows::Forms::Button());
@@ -110,7 +124,7 @@ namespace MC {
             this->gbxInput->Size = System::Drawing::Size(352, 114);
             this->gbxInput->TabIndex = 0;
             this->gbxInput->TabStop = false;
-            this->gbxInput->Text = L"ÊäÈë";
+            this->gbxInput->Text = L"è¾“å…¥";
             // 
             // gbxOutput
             // 
@@ -119,25 +133,25 @@ namespace MC {
             this->gbxOutput->Size = System::Drawing::Size(352, 114);
             this->gbxOutput->TabIndex = 1;
             this->gbxOutput->TabStop = false;
-            this->gbxOutput->Text = L"Êä³ö";
+            this->gbxOutput->Text = L"è¾“å‡º";
             // 
-            // label1
+            // lblCard
             // 
-            this->label1->AutoSize = true;
-            this->label1->Location = System::Drawing::Point(34, 25);
-            this->label1->Name = L"label1";
-            this->label1->Size = System::Drawing::Size(22, 15);
-            this->label1->TabIndex = 33;
-            this->label1->Text = L"¿¨";
+            this->lblCard->AutoSize = true;
+            this->lblCard->Location = System::Drawing::Point(34, 25);
+            this->lblCard->Name = L"lblGtsCard";
+            this->lblCard->Size = System::Drawing::Size(22, 15);
+            this->lblCard->TabIndex = 33;
+            this->lblCard->Text = L"å¡";
             // 
-            // label2
+            // lblIoMdl
             // 
-            this->label2->AutoSize = true;
-            this->label2->Location = System::Drawing::Point(33, 63);
-            this->label2->Name = L"label2";
-            this->label2->Size = System::Drawing::Size(31, 15);
-            this->label2->TabIndex = 35;
-            this->label2->Text = L"mdl";
+            this->lblIoMdl->AutoSize = true;
+            this->lblIoMdl->Location = System::Drawing::Point(33, 63);
+            this->lblIoMdl->Name = L"lblIoMdl";
+            this->lblIoMdl->Size = System::Drawing::Size(31, 15);
+            this->lblIoMdl->TabIndex = 35;
+            this->lblIoMdl->Text = L"mdl";
             // 
             // cbxSelectCard
             // 
@@ -154,7 +168,7 @@ namespace MC {
             // 
             this->cbxSelectMdl->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->cbxSelectMdl->FormattingEnabled = true;
-            this->cbxSelectMdl->Items->AddRange(gcnew cli::array< System::Object^  >(5) {L"ÎŞ", L"0", L"1", L"2", L"3"});
+            this->cbxSelectMdl->Items->AddRange(gcnew cli::array< System::Object^  >(5) {L"æ— ", L"0", L"1", L"2", L"3"});
             this->cbxSelectMdl->Location = System::Drawing::Point(83, 60);
             this->cbxSelectMdl->Name = L"cbxSelectMdl";
             this->cbxSelectMdl->Size = System::Drawing::Size(121, 23);
@@ -167,7 +181,7 @@ namespace MC {
             this->btnClose->Name = L"btnClose";
             this->btnClose->Size = System::Drawing::Size(62, 35);
             this->btnClose->TabIndex = 45;
-            this->btnClose->Text = L"¹Ø±Õ";
+            this->btnClose->Text = L"å…³é—­";
             this->btnClose->UseVisualStyleBackColor = true;
             this->btnClose->Click += gcnew System::EventHandler(this, &IOControl::btnClose_Click);
             // 
@@ -177,7 +191,7 @@ namespace MC {
             this->btnOpen->Name = L"btnOpen";
             this->btnOpen->Size = System::Drawing::Size(62, 35);
             this->btnOpen->TabIndex = 44;
-            this->btnOpen->Text = L"´ò¿ª";
+            this->btnOpen->Text = L"æ‰“å¼€";
             this->btnOpen->UseVisualStyleBackColor = true;
             this->btnOpen->Click += gcnew System::EventHandler(this, &IOControl::btnOpen_Click);
             // 
@@ -188,20 +202,18 @@ namespace MC {
             // 
             // IOControl
             // 
-            this->AutoScaleDimensions = System::Drawing::SizeF(8, 15);
-            ////this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
             this->ClientSize = System::Drawing::Size(403, 364);
             this->Controls->Add(this->btnClose);
             this->Controls->Add(this->btnOpen);
-            this->Controls->Add(this->label2);
+            this->Controls->Add(this->lblIoMdl);
             this->Controls->Add(this->cbxSelectMdl);
-            this->Controls->Add(this->label1);
+            this->Controls->Add(this->lblCard);
             this->Controls->Add(this->cbxSelectCard);
             this->Controls->Add(this->gbxOutput);
             this->Controls->Add(this->gbxInput);
             this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::Fixed3D;
             this->Name = L"IOControl";
-            this->Text = L"IOµ÷ÊÔ";
+            this->Text = L"IOè°ƒè¯•";
             this->ResumeLayout(false);
             this->PerformLayout();
 

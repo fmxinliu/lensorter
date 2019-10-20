@@ -2,12 +2,11 @@
 #include "iocontrol.h"
 #include <tchar.h>
 
-#define COUNT 16
 using namespace MC;
 
 void IOControl::InitControl(System::Windows::Forms::GroupBox^ gbx, String^ iotype)
 {
-    for (int i = 0; i < COUNT; i++) {
+    for (int i = 0; i < IOCOUNT_PER_MDL; i++) {
         System::Windows::Forms::Label^ lblIO = gcnew System::Windows::Forms::Label();
         lblIO->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
         lblIO->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
@@ -21,36 +20,52 @@ void IOControl::InitControl(System::Windows::Forms::GroupBox^ gbx, String^ iotyp
         if (iotype == L"lblOutput") {
             lblIO->Click += gcnew System::EventHandler(this, &IOControl::lblIO_Click);
         }
+
+        selectedCard = selectedMdl = 0;
+        cbxSelectCard->SelectedIndex = 0;
+        cbxSelectMdl->SelectedIndex = 0;
     }
 }
 
 System::Void IOControl::btnOpen_Click(System::Object^ sender, System::EventArgs^ e)
 {
+    bool ret = false;
     if (cbxSelectCard->Text == L"GTS-400") {
-        gts400->OpenCard();
+        ret = gts400->OpenCard();
     } else {
-        gts800->OpenCard();
+        ret = gts800->OpenCard();
     }
 
+    // 启动刷新定时器
     if (!timerRefresh->Enabled) {
         timerRefresh->Enabled = true;
+    }
+
+    // 提示
+    if (ret) {
+        ResetMdl();
+        btnOpen->Enabled = false;
+    } else {
+        System::Windows::Forms::MessageBox::Show(this, L"打开失败");
     }
 }
 
 System::Void IOControl::btnClose_Click(System::Object^ sender, System::EventArgs^ e)
 {
+    ResetMdl();
     if (cbxSelectCard->Text == L"GTS-400") {
         gts400->CloseCard();
     } else {
         gts800->CloseCard();
     }
+
+    btnOpen->Enabled = true;
 }
 
 System::Void IOControl::cbxSelectCard_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e)
 {
     if (selectedCard != cbxSelectCard->SelectedIndex) {
         selectedCard = cbxSelectCard->SelectedIndex;
-        ResetMdl();
     }
 }
 
@@ -58,27 +73,38 @@ System::Void IOControl::cbxSelectMdl_SelectedIndexChanged(System::Object^ sender
 {
     if (selectedMdl != cbxSelectMdl->SelectedIndex) {
         selectedMdl = cbxSelectMdl->SelectedIndex;
-        ResetMdl();
     }
 }
 
 System::Void IOControl::lblIO_Click(System::Object^ sender, System::EventArgs^ e)
 {
-    int mdl = getMdl();
-    GTSMotionProxy^ gts = gtsControl();
+    int mdl = GetMdl();
+    GTSMotionProxy^ gts = GtsControl();
 
     Label^ lblOutput = (Label ^)sender;
     int index = StringToInt(lblOutput->Text) - 1;
     bool value = (lblOutput->BackColor != Color::Green) ? true : false;
-    System::Console::WriteLine(value);
 
     if (mdl != -1) {
-        value = gts->SetDo(mdl, index, value) ? value : !value;
+        bool ret = gts->SetDo(mdl, index, value);
+        if (ret) {
+            pMdlIOBuffer[mdl] &= ~(1 << index);
+            pMdlIOBuffer[mdl] |= value << index;
+        }
+        value = ret ? value : !value;
     } else {
         value = gts->SetDo(index, value) ? value : !value;
     }
 
     lblOutput->BackColor = value ? Color::Green : SystemColors::Control;
+}
+
+System::Void IOControl::timerRefresh_Tick(System::Object^ sender, System::EventArgs^ e)
+{
+    timerRefresh->Stop();
+    RefreshInput();
+    RefreshOutput();
+    timerRefresh->Start();
 }
 
 int IOControl::StringToInt(String ^s)
@@ -91,13 +117,13 @@ int IOControl::StringToInt(String ^s)
     return value;
 }
 
-GTSMotionProxy^ IOControl::gtsControl()
+GTSMotionProxy^ IOControl::GtsControl()
 {
     GTSMotionProxy^ gts = (cbxSelectCard->Text == L"GTS-400") ? gts400 : gts800;
     return gts;
 }
 
-int IOControl::getMdl()
+int IOControl::GetMdl()
 {
     int mdl = selectedMdl ? selectedMdl - 1 : -1;
     return mdl;
@@ -105,9 +131,9 @@ int IOControl::getMdl()
 
 void IOControl::RefreshInput()
 {
-    int mdl = getMdl();
-    GTSMotionProxy^ gts = gtsControl();
-    
+    int mdl = GetMdl();
+    GTSMotionProxy^ gts = GtsControl();
+
     for (int i = 0; i < gbxInput->Controls->Count; i++) {
         Label^ lblOutput = (Label ^)gbxInput->Controls[i];
         int index = StringToInt(lblOutput->Text) - 1;
@@ -118,38 +144,36 @@ void IOControl::RefreshInput()
 
 void IOControl::RefreshOutput()
 {
-    int mdl = getMdl();
-    GTSMotionProxy^ gts = gtsControl();
+    int mdl = GetMdl();
+    GTSMotionProxy^ gts = GtsControl();
 
     for (int i = 0; i < gbxOutput->Controls->Count; i++) {
         Label^ lblOutput = (Label ^)gbxOutput->Controls[i];
         int index = StringToInt(lblOutput->Text) - 1;
-        if (mdl == -1) {
-            bool value = (mdl != -1) ? false : gts->ReadDo(index);
-            lblOutput->BackColor = value ? Color::Green : SystemColors::Control;
-        }
+        bool value = (mdl == -1) ? gts->ReadDo(index) : (pMdlIOBuffer[mdl] & (1 << index)) ? true : false;
+        lblOutput->BackColor = value ? Color::Green : SystemColors::Control;
     }
 }
 
 void IOControl::ResetMdl()
 {
-    int mdl = getMdl();
-    GTSMotionProxy^ gts = gtsControl();
+    int mdl = GetMdl();
+    GTSMotionProxy^ gts = GtsControl();
 
-    for (int i = 0; i < gbxOutput->Controls->Count; i++) {
-        Label^ lblOutput = (Label ^)gbxOutput->Controls[i];
-        int index = StringToInt(lblOutput->Text) - 1;
-        if (mdl != -1) {
-            ////bool value = gts->SetDo(mdl, index, false);
+    // 复位 IO
+    for (int i = 0; i < GTS_400_MDLNUM; i++) {
+        gts->SetDo(i, 0xffff);
+    }
+
+    // 复位显示
+    if (mdl != -1) {
+        for (int i = 0; i < IOCOUNT_PER_MDL; i++) {
+            Label^ lblOutput = (Label ^)gbxOutput->Controls[i];
+            int index = StringToInt(lblOutput->Text) - 1;
             lblOutput->BackColor = SystemColors::Control;
         }
     }
-}
 
-System::Void IOControl::timerRefresh_Tick(System::Object^ sender, System::EventArgs^ e)
-{
-    timerRefresh->Stop();
-    RefreshInput();
-    RefreshOutput();
-    timerRefresh->Start();
+    // 复位扩展 IO 缓存
+    memset(pMdlIOBuffer, 0, sizeof(int) * mdlNum);
 }

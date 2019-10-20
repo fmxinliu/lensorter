@@ -190,6 +190,11 @@ bool GTSMotionProxy::SetDo(short mdl, short port, bool value)
     return SwitchCardNo() && io && !io->SetDo(mdl, port, value);
 }
 
+bool GTSMotionProxy::SetDo(short mdl, int value)
+{
+    return SwitchCardNo() && io && !io->SetDo(mdl, value);
+}
+
 bool GTSMotionProxy::ReadAxisPos(short axisIdx, array<double>^ values)
 {
     bool ret = false;

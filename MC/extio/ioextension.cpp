@@ -61,15 +61,19 @@ bool IOExtension::ReadDi(short mdl, short index)
     unsigned short value = 0;
     GT_GetExtIoBit f = (GT_GetExtIoBit)GetProcAddress(hmodule, "GT_GetExtIoBit");
     short sRtn = f(mdl, index, &value);
-    return !sRtn && (value != 1); // 低电平有效
+    return !sRtn && (value != 1);
 }
 
 short IOExtension::SetDo(short mdl, short index, bool value)
 {
     GT_SetExtIoBit f = (GT_SetExtIoBit)GetProcAddress(hmodule, "GT_SetExtIoBit");
-    short sRtn = f(mdl, index, value ? 0 : 1); // 低电平有效
-    ////short sRtn = Reset();
-    ////GT_SetExtIoValue f = (GT_SetExtIoValue)GetProcAddress(hmodule, "GT_SetExtIoValue");
-    ////sRtn = f(0, 0x55AA);
+    short sRtn = f(mdl, index, value ? 0 : 1);
     return sRtn;
 }
+
+ short IOExtension::SetDo(short mdl, short value)
+ {
+     GT_SetExtIoValue f = (GT_SetExtIoValue)GetProcAddress(hmodule, "GT_SetExtIoValue");
+     short sRtn = f(mdl, value);
+     return sRtn;
+ }

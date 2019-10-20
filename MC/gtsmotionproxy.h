@@ -47,6 +47,7 @@ namespace MC {
         // 扩展 IO
         bool ReadDi(short mdl, short port);
         bool SetDo(short mdl, short port, bool value);
+        bool SetDo(short mdl, int value);
 
         // 位置
         bool ReadAxisPos(short axisIdx, array<double>^ values);
