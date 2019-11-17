@@ -126,6 +126,10 @@ short GTSMotionClass::P2PMove(int nAixID, long pos, double nSpeed, double nACC, 
     trap.acc = nACC;
     trap.dec = nDEC;
     trap.smoothTime = nSmoothTime;
+    // 清除轴的报警和限位
+    sRtn = GT_ClrSts(nAixID);
+    // 位置清零
+    sRtn = GT_ZeroPos(nAixID);
     // 设置点位运动参数
     sRtn = GT_SetTrapPrm(nAixID, &trap);
     // 设置AXIS轴的目标位置
@@ -134,16 +138,17 @@ short GTSMotionClass::P2PMove(int nAixID, long pos, double nSpeed, double nACC, 
     sRtn = GT_SetVel(nAixID, nSpeed);
     // 启动AXIS轴的运动
     sRtn = GT_Update(1<<(nAixID-1));
-    long sts;
+    //long sts;
     //double prfPos;
     //do
     //{
-    //// 读取AXIS轴的状态
-    sRtn = GT_GetSts(nAixID, &sts);
-    //// 读取AXIS轴的规划位置
-    //sRtn = GT_GetPrfPos(nAixID, &prfPos);
-    ////printf("sts=0x%-10lxprfPos=%-10.1lf\r", sts, prfPos);
-    //}while(sts&0x400); // 等待AXIS轴规划停止
+    //    // 读取AXIS轴的状态
+    //    sRtn = GT_GetSts(nAixID, &sts);
+    //    // 读取AXIS轴的规划位置
+    //    sRtn = GT_GetPrfPos(nAixID, &prfPos);
+    //    printf("sts=0x%-10lxprfPos=%-10.1lf\r", sts, prfPos);
+    //} while(sts&0x400); // 等待AXIS轴规划停止
+    //
     return sRtn;
 }
 
@@ -158,6 +163,10 @@ short GTSMotionClass::P2PMoveWaitFinished(int nAixID, long pos, double nSpeed, d
     trap.acc = nACC;
     trap.dec = nDEC;
     trap.smoothTime = nSmoothTime;
+    // 清除轴的报警和限位
+    sRtn = GT_ClrSts(nAixID);
+    // 位置清零
+    sRtn = GT_ZeroPos(nAixID);
     // 设置点位运动参数
     sRtn = GT_SetTrapPrm(nAixID, &trap);
     // 设置AXIS轴的目标位置
@@ -166,6 +175,7 @@ short GTSMotionClass::P2PMoveWaitFinished(int nAixID, long pos, double nSpeed, d
     sRtn = GT_SetVel(nAixID, nSpeed);
     // 启动AXIS轴的运动
     sRtn = GT_Update(1<<(nAixID-1));
+
     long sts;
     double prfPos;
 

@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="motion\AxisID.cs" />
     <Compile Include="motion\AxisSetting.cs">
       <SubType>Form</SubType>
     </Compile>

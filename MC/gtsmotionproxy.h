@@ -13,52 +13,52 @@ namespace MC {
     public ref class GTSMotionProxy
     {
     public:
-        GTSMotionProxy(short cardIdx, short axisNum, short extmdlNum);
+        GTSMotionProxy(int cardIdx, int axisNum, int extmdlNum);
         virtual ~GTSMotionProxy(void);
 
         bool OpenCard();
         bool CloseCard();
 
-        bool AixOn(short axisIdx);
-        bool AixOff(short axisIdx);
+        bool AixOn(int axisIdx);
+        bool AixOff(int axisIdx);
         bool LoadConfig(String ^path);
-        bool ClearSts(short axisIdx, short count);
-        bool SetZeroPos(short axisIdx, short count);
+        bool ClearSts(int axisIdx, int count);
+        bool SetZeroPos(int axisIdx, int count);
         bool HomeInit();
 
-        bool JogMove(short axisIdx, double speed, double acc, double dec);
-        bool P2PMove(short axisIdx, double speed, double acc, double dec, long pos/*pulse*/);
-        bool P2PMoveWaitFinished(short axisIdx, double speed, double acc, double dec, long pos/*pulse*/);
+        bool JogMove(int axisIdx, double speed, double acc, double dec);
+        bool P2PMove(int axisIdx, double speed, double acc, double dec, long pos/*pulse*/);
+        bool P2PMoveWaitFinished(int axisIdx, double speed, double acc, double dec, long pos/*pulse*/);
 
         // 复位
-        bool HomeWithSensor(short axisIdx, double speed, double acc, long pos/*pulse*/, long offset);
-        bool GetHomeDone(short axisIdx);
+        bool HomeWithSensor(int axisIdx, double speed, double acc, long pos/*pulse*/, long offset);
+        bool GetHomeDone(int axisIdx);
 
         // 停止
         bool Stop();
-        bool Stop(short axisIdx);
-        bool EmgStop(short axisIdx);
+        bool Stop(int axisIdx);
+        bool EmgStop(int axisIdx);
 
         // IO
-        bool ReadDi(short port);
-        bool ReadDo(short port);
-        bool SetDo(short port, bool value);
+        bool ReadDi(int port);
+        bool ReadDo(int port);
+        bool SetDo(int port, bool value);
 
         // 扩展 IO
-        bool ReadDi(short mdl, short port);
-        bool SetDo(short mdl, short port, bool value);
-        bool SetDo(short mdl, int value);
+        bool ReadDi(int mdl, int port);
+        bool SetDo(int mdl, int port, bool value);
+        bool SetDo(int mdl, int value);
 
         // 位置
-        bool ReadAxisPos(short axisIdx, array<double>^ values);
-        double ReadAxisPos(short axisIdx);
+        bool ReadAxisPos(int axisIdx, array<double>^ values);
+        double ReadAxisPos(int axisIdx);
 
     private:
         bool SwitchCardNo();
 
     private:
-        short m_cardIdx;
-        short m_axisNum;
+        int m_cardIdx;
+        int m_axisNum;
         GTSMotionClass *gts;
         IOExtension *io;
     };

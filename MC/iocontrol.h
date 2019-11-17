@@ -4,8 +4,8 @@
 
 #define GTS_400 0
 #define GTS_800 1
-#define GTS_400_AIXSNUM 4
-#define GTS_800_AIXSNUM 8
+#define GTS_400_AXISNUM 4
+#define GTS_800_AXISNUM 8
 #define GTS_400_MDLNUM 4
 #define GTS_800_MDLNUM 0
 #define IOCOUNT_PER_MDL 16
@@ -35,8 +35,8 @@ namespace MC {
             InitControl(this->gbxInput, "lblInput");
             InitControl(this->gbxOutput, "lblOutput");
 
-            gts400 = gcnew GTSMotionProxy(GTS_400, GTS_400_AIXSNUM, GTS_400_MDLNUM);
-            gts800 = gcnew GTSMotionProxy(GTS_800, GTS_800_AIXSNUM, GTS_800_MDLNUM);
+            gts400 = gcnew GTSMotionProxy(GTS_400, GTS_400_AXISNUM, GTS_400_MDLNUM);
+            gts800 = gcnew GTSMotionProxy(GTS_800, GTS_800_AXISNUM, GTS_800_MDLNUM);
 
             // 扩展 IO 缓存
             mdlNum = GTS_400_MDLNUM + GTS_800_MDLNUM;

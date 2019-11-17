@@ -16,7 +16,8 @@ namespace UI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MC.IOControl());
+            Application.Run(new UI.motion.Motion());
+            //Application.Run(new MC.IOControl());
             //Application.Run(new UITest.RowMergeView());
         }
     }

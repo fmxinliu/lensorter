@@ -19,6 +19,7 @@ public:
 
 private:
     HMODULE hmodule;
+    bool init;
 };
 
 #endif // IOEXTENSION_H
