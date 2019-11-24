@@ -36,7 +36,7 @@ bool GTSMotionProxy::SwitchCardNo()
 
 bool GTSMotionProxy::OpenCard()
 {
-    bool ret = SwitchCardNo() && !gts->OpenCard();
+    bool ret = SwitchCardNo() && !gts->OpenCard() && Stop();
     if (!ret) {
         printf("Card Open Fail");
     }
@@ -51,7 +51,13 @@ bool GTSMotionProxy::OpenCard()
 
 bool GTSMotionProxy::CloseCard()
 {
-    return SwitchCardNo() && Stop() && !gts->CloseCard();
+    bool ret = SwitchCardNo() && Stop() && !gts->CloseCard();
+    if (ret && io && io->Close()) {
+        ret = false;
+        printf("IOExtense Close Fail");
+    }
+
+    return ret;
 }
 
 bool GTSMotionProxy::AixOn(int axisIdx)

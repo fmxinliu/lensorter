@@ -66,7 +66,7 @@
             this.btnFeedOne.Name = "btnFeedOne";
             this.btnFeedOne.Size = new System.Drawing.Size(63, 29);
             this.btnFeedOne.TabIndex = 2;
-            this.btnFeedOne.Text = "FeedOne";
+            this.btnFeedOne.Text = "PassOne";
             this.btnFeedOne.UseVisualStyleBackColor = true;
             this.btnFeedOne.Click += new System.EventHandler(this.btnFeedOne_Click);
             // 

@@ -4,7 +4,6 @@
 
 IOExtension::IOExtension(void)
 {
-    init = false;
     hmodule = LoadLibrary("ExtMdl.dll");
     if (!hmodule) {
         throw ("ExtMdl.dll load fail");
@@ -27,14 +26,11 @@ short IOExtension::Open()
     if (!sRtn) {
         GT_LoadExtConfig f = (GT_LoadExtConfig)GetProcAddress(hmodule, "GT_LoadExtConfig");
         sRtn = f("ExtMdl1.cfg");
-        if (!sRtn && !init) {
+        if (!sRtn) {
             GT_SetExtMdlMode f = (GT_SetExtMdlMode)GetProcAddress(hmodule, "GT_SetExtMdlMode");
             sRtn = f(0); // 设置模块的工作方式为独立模式
             if (!sRtn) {
                 sRtn = Reset();
-                if (!sRtn) {
-                    init = true;
-                }
             }
         }
     }
@@ -44,7 +40,7 @@ short IOExtension::Open()
 
 short IOExtension::Close()
 {
-    GT_CloseExtMdl f = (GT_CloseExtMdl)GetProcAddress(hmodule, "GT_OpenExtMdl");
+    GT_CloseExtMdl f = (GT_CloseExtMdl)GetProcAddress(hmodule, "GT_CloseExtMdl");
     return f();
 }
 

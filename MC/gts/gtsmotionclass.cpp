@@ -20,7 +20,8 @@ short GTSMotionClass::OpenCard()
 
 short GTSMotionClass::CloseCard()
 {
-    return GT_Close();
+    short sRtn = GT_Close();
+    return sRtn;
 }
 
 short GTSMotionClass::ResetCard()
@@ -185,7 +186,7 @@ short GTSMotionClass::P2PMoveWaitFinished(int nAixID, long pos, double nSpeed, d
         sRtn = GT_GetSts(nAixID, &sts);
         // 读取AXIS轴的规划位置
         sRtn = GT_GetPrfPos(nAixID, &prfPos);
-
+        SleepEx(10, FALSE);
     } while(sts&0x400); // 等待AXIS轴规划停止
 
     return sRtn;
