@@ -15,12 +15,28 @@ GTSMotionProxy::GTSMotionProxy(int cardIdx, int axisNum, int extmdlNum)
     }
 
     io = extmdlNum > 0 ? new IOExtension() : NULL;
+
+    if (object == nullptr) {
+        object = gcnew Object;
+    }
 }
 
 GTSMotionProxy::~GTSMotionProxy(void)
 {
     delete io; io = NULL;
     delete gts; gts = NULL;
+}
+
+// 获取同步锁
+void GTSMotionProxy::Lock()
+{
+    Monitor::Enter(object);
+}
+
+// 释放同步锁
+void GTSMotionProxy::Unlock()
+{
+    Monitor::Exit(object);
 }
 
 bool GTSMotionProxy::SwitchCardNo()
@@ -36,6 +52,7 @@ bool GTSMotionProxy::SwitchCardNo()
 
 bool GTSMotionProxy::OpenCard()
 {
+    this->Lock();
     bool ret = SwitchCardNo() && !gts->OpenCard() && Stop();
     if (!ret) {
         printf("Card Open Fail");
@@ -45,165 +62,191 @@ bool GTSMotionProxy::OpenCard()
         ret = false;
         printf("IOExtense Open Fail");
     }
-
+    this->Unlock();
     return ret;
 }
 
 bool GTSMotionProxy::CloseCard()
 {
+    this->Lock();
     bool ret = SwitchCardNo() && Stop() && !gts->CloseCard();
     if (ret && io && io->Close()) {
         ret = false;
         printf("IOExtense Close Fail");
     }
-
+    this->Unlock();
     return ret;
 }
 
 bool GTSMotionProxy::AixOn(int axisIdx)
 {
-    return SwitchCardNo() && !gts->AixOn(axisIdx);
+    this->Lock();
+    bool ret = SwitchCardNo() && !gts->AixOn(axisIdx);
+    this->Unlock();
+    return ret;
 }
 
 bool GTSMotionProxy::AixOff(int axisIdx)
 {
-    return SwitchCardNo() && !gts->AixOff(axisIdx);
+    this->Lock();
+    bool ret = SwitchCardNo() && !gts->AixOff(axisIdx);
+    this->Unlock();
+    return ret;
 }
 
 bool GTSMotionProxy::LoadConfig(String ^path)
 {
-    return SwitchCardNo() && !gts->LoadConfig(marshal_as<string>(path));
+    this->Lock();
+    bool ret = SwitchCardNo() && !gts->LoadConfig(marshal_as<string>(path));
+    this->Unlock();
+    return ret;
 }
 
 bool GTSMotionProxy::ClearSts(int axisIdx, int count)
 {
-    return SwitchCardNo() && !gts->ClearSts(axisIdx, count);
+    this->Lock();
+    bool ret = SwitchCardNo() && !gts->ClearSts(axisIdx, count);
+    this->Unlock();
+    return ret;
 }
 
 bool GTSMotionProxy::SetZeroPos(int axisIdx, int count)
 {
-    return SwitchCardNo() && !gts->SetZeroPos(axisIdx, count);
+    this->Lock();
+    bool ret = SwitchCardNo() && !gts->SetZeroPos(axisIdx, count);
+    this->Unlock();
+    return ret;
 }
 
 bool GTSMotionProxy::HomeInit()
 {
-    return SwitchCardNo() && !gts->HomeInit();
+    this->Lock();
+    bool ret = SwitchCardNo() && !gts->HomeInit();
+    this->Unlock();
+    return ret;
 }
 
 bool GTSMotionProxy::JogMove(int axisIdx, double speed, double acc, double dec)
 {
-    return SwitchCardNo() && !gts->JogMove(axisIdx, speed, acc, dec, 0.8);
+    this->Lock();
+    bool ret = SwitchCardNo() && !gts->JogMove(axisIdx, speed, acc, dec, 0.8);
+    this->Unlock();
+    return ret;
 }
 
 bool GTSMotionProxy::P2PMove(int axisIdx, double speed, double acc, double dec, long pos)
 {
-    return SwitchCardNo() && !gts->P2PMove(axisIdx, pos, speed, acc, dec, 1);
+    this->Lock();
+    bool ret = SwitchCardNo() && !gts->P2PMove(axisIdx, pos, speed, acc, dec, 1);
+    this->Unlock();
+    return ret;
 }
 
 bool GTSMotionProxy::P2PMoveWaitFinished(int axisIdx, double speed, double acc, double dec, long pos)
 {
-    return SwitchCardNo() && !gts->P2PMoveWaitFinished(axisIdx, pos, speed, acc, dec, 1);
+    this->Lock();
+    bool ret = SwitchCardNo() && !gts->P2PMoveWaitFinished(axisIdx, pos, speed, acc, dec, 1);
+    this->Unlock();
+    return ret;
 }
 
 // 复位
 bool GTSMotionProxy::HomeWithSensor(int axisIdx, double speed, double acc, long pos, long offset)
 {
-    return SwitchCardNo() && !gts->HomeWithSensor(axisIdx, pos, speed, acc, 0);
+    this->Lock();
+    bool ret = SwitchCardNo() && !gts->HomeWithSensor(axisIdx, pos, speed, acc, 0);
+    this->Unlock();
+    return ret;
 }
 
 bool GTSMotionProxy::GetHomeDone(int axisIdx)
 {
-    return SwitchCardNo() && gts->GetHomeDone(axisIdx);
+    this->Lock();
+    bool ret = SwitchCardNo() && gts->GetHomeDone(axisIdx);
+    this->Unlock();
+    return ret;
 }
 
 // 停止
 bool GTSMotionProxy::Stop()
 {
+    this->Lock();
     bool ret = SwitchCardNo();
     if (ret) {
         gts->StopMultiMove(m_axisNum);
     }
+    this->Unlock();
     return ret;
 }
 
 bool GTSMotionProxy::Stop(int axisIdx)
 {
-    return SwitchCardNo() && !gts->StopMove(axisIdx, 0);
+    this->Lock();
+    bool ret = SwitchCardNo() && !gts->StopMove(axisIdx, 0);
+    this->Unlock();
+    return ret;
 }
 
 bool GTSMotionProxy::EmgStop(int axisIdx)
 {
-    return SwitchCardNo() && !gts->StopMove(axisIdx, 1);
+    this->Lock();
+    bool ret = SwitchCardNo() && !gts->StopMove(axisIdx, 1);
+    this->Unlock();
+    return ret;
 }
 
 // IO
 bool GTSMotionProxy::ReadDi(int port)
 {
-    return SwitchCardNo() && gts->ReadDi(port);
+    this->Lock();
+    bool ret = SwitchCardNo() && gts->ReadDi(port);
+    this->Unlock();
+    return ret;
 }
 
 bool GTSMotionProxy::ReadDo(int port)
 {
-    return SwitchCardNo() && gts->ReadDo(port);
+    this->Lock();
+    bool ret = SwitchCardNo() && gts->ReadDo(port);
+    this->Unlock();
+    return ret;
 }
 
 bool GTSMotionProxy::SetDo(int port, bool value)
 {
-   return SwitchCardNo() && !gts->SetDo(port, value);
+   this->Lock();
+   bool ret = SwitchCardNo() && !gts->SetDo(port, value);
+   this->Unlock();
+   return ret;
 }
-//bool GTSMotionProxy::ReadDi(int port)
-//{
-//    // 0-15  卡
-//    // 16-31 模块1
-//    // 32-47 模块2
-//    // 48-63 模块3
-//    // 64-79 模块4
-//    bool value = false;
-//    if (SwitchCardNo()) {
-//        value = (port < 16) ? gts->ReadDi(port) : io->ReadDi(port / 16 - 1, port % 16);
-//    }
-//    return value;
-//}
-//
-//bool GTSMotionProxy::ReadDo(int port)
-//{
-//    bool value = false;
-//    if (SwitchCardNo()) {
-//        if (port >= 0 && port < 16) {
-//            value = gts->ReadDo(port);
-//        } else {
-//            throw gcnew Exception("无法获取扩展模块输出端口值");
-//        }
-//    }
-//    return value;
-//}
-//
-//bool GTSMotionProxy::SetDo(int port, bool value)
-//{
-//    bool ret = false;
-//    if (SwitchCardNo()) {
-//        ret = (port < 16) ? !gts->SetDo(port, value) : !io->SetDo(port / 16 - 1, port % 16, value);
-//    }
-//    return ret;
-//}
 
 bool GTSMotionProxy::ReadDi(int mdl, int port)
 {
-    return SwitchCardNo() && io && io->ReadDi(mdl, port);
+    this->Lock();
+    bool ret = SwitchCardNo() && io && io->ReadDi(mdl, port);
+    this->Unlock();
+    return ret;
 }
 
 bool GTSMotionProxy::SetDo(int mdl, int port, bool value)
 {
-    return SwitchCardNo() && io && !io->SetDo(mdl, port, value);
+    this->Lock();
+    bool ret = SwitchCardNo() && io && !io->SetDo(mdl, port, value);
+    this->Unlock();
+    return ret;
 }
 
 bool GTSMotionProxy::SetDo(int mdl, int value)
 {
-    return SwitchCardNo() && io && !io->SetDo(mdl, value);
+    this->Lock();
+    bool ret = SwitchCardNo() && io && !io->SetDo(mdl, value);
+    this->Unlock();
+    return ret;
 }
 
 bool GTSMotionProxy::ReadAxisPos(int axisIdx, array<double>^ values)
 {
+    this->Lock();
     bool ret = false;
     if (SwitchCardNo()) {
         int count = values->Length;
@@ -218,15 +261,17 @@ bool GTSMotionProxy::ReadAxisPos(int axisIdx, array<double>^ values)
         //delete []pos;
     }
 
+    this->Unlock();
     return ret;
 }
 
 double GTSMotionProxy::ReadAxisPos(int axisIdx)
 {
+    this->Lock();
     double pos = 0;
     if (SwitchCardNo()) {
         gts->ReadEncodePos(axisIdx, 1, &pos);
     }
-
+    this->Unlock();
     return pos;
 }

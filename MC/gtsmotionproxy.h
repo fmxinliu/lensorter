@@ -5,6 +5,7 @@
 
 using namespace System;
 using namespace msclr::interop;
+using namespace System::Threading;
 
 class IOExtension;
 class GTSMotionClass;
@@ -55,12 +56,15 @@ namespace MC {
 
     private:
         bool SwitchCardNo();
+        void Lock();
+        void Unlock();
 
     private:
         int m_cardIdx;
         int m_axisNum;
         GTSMotionClass *gts;
         IOExtension *io;
+        static Object ^object;
     };
 }
 

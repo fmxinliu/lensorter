@@ -18,12 +18,12 @@ namespace UI.motion
         public static int GTS800 = 1;
 
         /// <summary>
-        /// 水平移动仓（左+）
+        /// 移动仓水平（左+）
         /// </summary>
         public static int ProductMoveX = 0;
 
         /// <summary>
-        /// 垂直移动仓（下+）
+        /// 移动仓垂直（下+）
         /// </summary>
         public static int ProductMoveZ = 1;
 
@@ -78,7 +78,7 @@ namespace UI.motion
         public static int ContactMoveZ2 = 6;
 
         /// <summary>
-        /// 焦度计镜头Z向升起（上+）
+        /// 打印机Z向升起（上+）
         /// </summary>
         public static int PrinterMoveZ = 7;
 
