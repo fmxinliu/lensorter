@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="motion\AbstractProcess.cs" />
     <Compile Include="motion\AxisID.cs" />
     <Compile Include="motion\AxisSetting.cs">
       <SubType>Form</SubType>
@@ -53,12 +54,16 @@
     <Compile Include="motion\AxisSetting.designer.cs">
       <DependentUpon>AxisSetting.cs</DependentUpon>
     </Compile>
+    <Compile Include="motion\DegreeMeasureProcess.cs" />
+    <Compile Include="motion\DimMeasureProcess.cs" />
+    <Compile Include="motion\FeedOneProcess.cs" />
     <Compile Include="motion\IoSetting.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="motion\IoSetting.Designer.cs">
       <DependentUpon>IoSetting.cs</DependentUpon>
     </Compile>
+    <Compile Include="motion\LenPackProcess.cs" />
     <Compile Include="motion\Motion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,6 +71,9 @@
       <DependentUpon>Motion.cs</DependentUpon>
     </Compile>
     <Compile Include="motion\ParaInfo.cs" />
+    <Compile Include="motion\PassOneProcess.cs" />
+    <Compile Include="motion\PreFeedProcess.cs" />
+    <Compile Include="motion\StepOneProcess.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="test\Form1.cs">

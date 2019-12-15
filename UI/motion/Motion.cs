@@ -10,20 +10,46 @@ using MC;
 
 namespace UI.motion
 {
-    public class LenInfo
-    {
-        public int step;
-        public bool hasLen;
-        public bool hasOK;
-    }
-
     public partial class Motion : Form
     {
         //private IOControl iocontrol = new IOControl();
         //private Dictionary<Axis, ParaInfo> paraInfo;
-        GTSMotionProxy gts400 = new GTSMotionProxy(Axis.GTS400, Axis.GTS400Total, 4);
-        GTSMotionProxy gts800 = new GTSMotionProxy(Axis.GTS800, Axis.GTS800Total, 0);
+        GTSMotionProxy gts400;
+        GTSMotionProxy gts800;
+        FeedOneProcess feedOneProcess;
+        PreFeedProcess prefeedProcess;
+        PassOneProcess passOneProcess;
+        StepOneProcess stepOneProcess;
+        DimMeasureProcess dimMeasureProcess;
+        DegreeMeasureProcess degreeMeasureProcess;
+        LenPackProcess lenPackProcess;
+
         private List<LenInfo> lenList = new List<LenInfo>();
+        private ManualResetEventSlim feedOneEvent = new ManualResetEventSlim(); // 指示皮带1、2进料
+        private ManualResetEventSlim passOneEvent = new ManualResetEventSlim(); // 指示皮带3进料
+        private ManualResetEventSlim stepOneEvent = new ManualResetEventSlim(); // 指示挡料开关可以进料
+        private bool start = false;
+
+        private bool Start
+        {
+            get
+            {
+                lock (this)
+                {
+                    return this.start;
+                }
+            }
+
+            set
+            {
+                lock (this)
+                {
+                    this.start = value;
+                }
+            }
+        }
+
+        #region 
         private bool passOne = false;
         private bool feedOne = false;
         private bool feedStart = false;
@@ -32,14 +58,103 @@ namespace UI.motion
         private bool stepOne = false;
         private bool op1 = false;
         private bool op2 = false;
+        #endregion
 
         public Motion()
         {
             InitializeComponent();
             //iocontrol.Show();
-            this.btnInit_Click(null, null);
+            //this.btnInit_Click(null, null);
+            this.gts400 = new GTSMotionProxy(Axis.GTS400, Axis.GTS400Total, 4);
+            this.gts800 = new GTSMotionProxy(Axis.GTS800, Axis.GTS800Total, 0);
+            this.feedOneProcess = new FeedOneProcess(gts400, gts800);
+            this.prefeedProcess = new PreFeedProcess(gts400, gts800);
+            this.passOneProcess = new PassOneProcess(gts400, gts800);
+            this.stepOneProcess = new StepOneProcess(gts400, gts800);
+            this.dimMeasureProcess = new DimMeasureProcess(gts400, gts800);
+            this.degreeMeasureProcess = new DegreeMeasureProcess(gts400, gts800);
+            this.lenPackProcess = new LenPackProcess(gts400, gts800);
+
+            ThreadPool.QueueUserWorkItem(o =>
+            {
+                while (true)
+                {
+                    if (this.Start)
+                        this.Process();
+                    Thread.Sleep(100);
+                }
+            });
         }
 
+        private void Process()
+        {
+            if (this.IsOnposOp3())
+            {
+                this.lenPackProcess.Do(); // 启动打包
+            }
+            else if (!this.IsOnposOp1() && !this.IsOnposOp2())
+            {
+                bool hasFindLens3 = this.gts400.ReadDi(3, 3);
+                bool hasFindLens4 = this.gts400.ReadDi(3, 4);
+
+                if (!this.gts400.ReadDi(3, 4)) // 如果挡料位没有料
+                {
+                    this.prefeedProcess.Do();
+                    if (!this.gts400.ReadDi(3, 3)) // 如果备料位没有料
+                        this.feedOneProcess.Do();
+                    
+                    // 等待进料完成
+                    while (!this.gts400.ReadDi(3, 4))
+                        Thread.Sleep(1000);
+                }
+
+                this.AddLen();
+                this.passOneProcess.Do(); // 开始进料
+                
+                // 等待进料完成
+                while (this.gts400.ReadDi(3, 4))
+                    Thread.Sleep(1000);
+
+                // 继续备料一片
+                this.prefeedProcess.Do();
+                this.feedOneProcess.Do();
+            }
+            else if (this.IsReadyOp1() && this.IsReadyOp2())
+            {
+                if (this.IsOnposOp2())
+                    this.stepOneProcess.MoveToPackpos();
+                else
+                    this.stepOneProcess.StepOne(); // 启动移动一位
+
+                this.Step(); // 镜片队列中全部前移一位
+
+                while (!this.stepOneProcess.IsMoveDone())
+                    Thread.Sleep(200);
+            }
+            else
+            {
+            }
+
+            if (this.IsOnposOp1())
+                this.dimMeasureProcess.Do();
+            
+            if (this.IsOnposOp2())
+                this.degreeMeasureProcess.Do();
+        }
+
+
+        private void Step()
+        {
+            lock (this.lenList)
+            {
+                for (int i = 0; i < this.lenList.Count; i++)
+                {
+                    this.lenList[i].step++;
+                }
+            }
+        }
+
+        #region
         private bool Op1
         {
             get
@@ -172,6 +287,7 @@ namespace UI.motion
                 }
             }
         }
+        #endregion
 
         private bool Open()
         {
@@ -199,122 +315,7 @@ namespace UI.motion
             return gts400.CloseCard() && gts800.CloseCard();
         }
 
-        private void WaitFeed(int mdl1, int port1, int mdl2, int port2, int axis)
-        {
-            while (gts400.ReadDi(mdl1, port1))
-            {
-                if (gts400.ReadDi(mdl2, port2))
-                    gts400.Stop(axis);
-                if (!this.feedOpened)
-                    break;
-                Thread.Sleep(10);
-            }
-        }
-
-        private void Feed()
-        {
-            bool hasFindLens1 = gts400.ReadDi(3, 5);
-            bool hasFindLens2 = gts400.ReadDi(3, 2);
-            bool hasFindLens3 = gts400.ReadDi(3, 3);
-
-            if (this.FeedOne)
-            {
-                if (hasFindLens1 && !hasFindLens2)
-                {
-                    feedSwitch = false;
-                    gts400.JogMove(Axis.LensMoveX1, 10, 0.1, 0.1);
-                    this.WaitFeed(3, 5, 3, 2, Axis.LensMoveX2); // 放皮带1镜片通过
-                }
-                else if (!hasFindLens1 && hasFindLens2)
-                {
-                    feedSwitch = true;
-                    gts400.JogMove((int)Axis.LensMoveX2, 10, 0.1, 0.1);
-                    this.WaitFeed(3, 2, 3, 5, Axis.LensMoveX1); // 放皮带2镜片通过
-                }
-                else if (hasFindLens1 && hasFindLens2)
-                {
-                    if (feedSwitch)
-                    {
-                        gts400.JogMove(Axis.LensMoveX1, 10, 0.1, 0.1);
-                        this.WaitFeed(3, 5, 3, 2, Axis.LensMoveX2); // 放皮带1镜片通过
-                    }
-                    else
-                    {
-                        gts400.JogMove(Axis.LensMoveX2, 10, 0.1, 0.1);
-                        this.WaitFeed(3, 2, 3, 5, Axis.LensMoveX1); // 放皮带2镜片通过
-                    }
-
-                    feedSwitch = !feedSwitch;
-                }
-                else
-                {
-                    gts400.JogMove(Axis.LensMoveX1, 10, 0.1, 0.1);
-                    gts400.JogMove(Axis.LensMoveX2, 10, 0.1, 0.1);
-                }
-
-                this.FeedOne = !hasFindLens1 && !hasFindLens2;
-            }
-            else
-            {
-                // 1号光耦检测到料停止皮带1
-                if (hasFindLens1)
-                    gts400.Stop(Axis.LensMoveX1);
-                else
-                    gts400.JogMove(Axis.LensMoveX1, 10, 0.1, 0.1);
-
-                // 2号光耦检测到料停止皮带2
-                if (hasFindLens2)
-                    gts400.Stop(Axis.LensMoveX2);
-                else
-                    gts400.JogMove(Axis.LensMoveX2, 10, 0.1, 0.1);
-            }
-
-            // 4号皮带一直转
-            gts800.JogMove(Axis.LensMoveX4, 10, 0.1, 0.1);
-        }
-
-        private void Pass()
-        {
-            bool hasFindLens3 = gts400.ReadDi(3, 3);
-            bool hasFindLens4 = gts400.ReadDi(3, 4);
-
-            if (this.PassOne)
-            {
-                if (hasFindLens3)
-                {
-                    gts800.JogMove(Axis.LensMoveY3, 10, 0.1, 0.1);
-                    while (gts400.ReadDi(3, 3))
-                    {
-                        Thread.Sleep(10);
-                        if (!this.feedOpened)
-                            return;
-                    }
-                    this.PassOne = false;
-                }
-            }
-            else
-            {
-                // 3号光耦检测到料停止皮带3
-                if (hasFindLens3)
-                    gts800.Stop(Axis.LensMoveY3);
-                else
-                    gts800.JogMove(Axis.LensMoveY3, 10, 0.1, 0.1);
-            }
-
-            if (!hasFindLens3)
-            {
-                this.FeedOne = true;
-                while (!gts400.ReadDi(3, 3)) {
-                    Thread.Sleep(10);
-                    if (!this.feedOpened)
-                        return;
-                }
-            }
-            
-           //this.FeedOne = hasFindLens3 ? false : true;
-        }
-
-        private void Step()
+        private void Step1()
         {
             if (this.StepOne && this.IsReadyOp1() && this.IsReadyOp2())
             {
@@ -392,60 +393,14 @@ namespace UI.motion
                 {
                     btnInit.Text = "关闭";
 
-                     // #1
-                    ThreadPool.QueueUserWorkItem(o =>
-                    {
-                        while (this.FeedOpened)
-                        {
-                            if (this.FeedStart)
-                                this.Feed();
-                            Thread.Sleep(100);
-                        }
-                    });
-
-                    // #2
-                    ThreadPool.QueueUserWorkItem(o =>
-                    {
-                        while (this.FeedOpened)
-                        {
-                            if (this.FeedStart)
-                                this.Pass();
-                            Thread.Sleep(100);
-                        }
-                    });
-
-                    // #3
-                    ThreadPool.QueueUserWorkItem(o =>
-                    {
-                        while (this.FeedOpened)
-                        {
-                            if (this.FeedStart)
-                                this.Step();
-                            Thread.Sleep(100);
-                        }
-                    });
-
-                    // #4
-                    ThreadPool.QueueUserWorkItem(o =>
-                    {
-                        while (this.FeedOpened)
-                        {
-                            if (this.FeedStart)
-                              this.Measure1();
-                            Thread.Sleep(100);
-                        }
-                    });
-
-                    // #5
-                    ThreadPool.QueueUserWorkItem(o =>
-                    {
-                        while (this.FeedOpened)
-                        {
-                            if (this.FeedStart)
-                                this.Measure2();
-                            Thread.Sleep(100);
-                        }
-                    });
+                    // #1 ~ #6
+                    this.feedOneProcess.Start();
+                    this.prefeedProcess.Start();
+                    this.passOneProcess.Start();
+                    this.stepOneProcess.Start();
+                    this.dimMeasureProcess.Start();
+                    this.degreeMeasureProcess.Start();
+                    this.Start = true;
                 }
             }
             else if (this.Close())
@@ -467,133 +422,15 @@ namespace UI.motion
 
         private void btnThicknessMeasure_Click(object sender, EventArgs e)
         {
-            
         }
 
         private void btnDegreeMeasure_Click(object sender, EventArgs e)
         {
-            
         }
 
         private void btnPack_Click(object sender, EventArgs e)
         {
-            // 停止吸气
-            gts400.SetDo(1, 4, false);
-            gts400.SetDo(1, 5, true);
-
-            // 顶料
-            gts400.SetDo(0, 11, true);
-            gts400.SetDo(0, 12, false);
-
-            // 镜片旋转
-            gts400.SetDo(0, 9, false);
-            gts400.SetDo(0, 10, true);
-
-            // 料袋上下缸
-            gts800.SetDo(10, true);
-            gts800.SetDo(11, false);
-
-            // 料袋上下辅助缸
-            gts800.SetDo(12, true);
-            gts800.SetDo(13, false);
-
-            // 料袋定位缸
-            gts800.SetDo(8, true);
-            gts800.SetDo(9, false);
-
-
-            // 料袋衔接缸
-            gts800.SetDo(14, true);
-            gts800.SetDo(15, false);
-
-            // 伸缩袋缸
-            gts400.SetDo(0, 13, true);
-            gts400.SetDo(0, 14, false);
-
-            ///////////// 放袋子
-            Thread.Sleep(1000);
-
-            // 检测到袋子已落下  === 信号
-            // 料袋定位缸
-            gts800.SetDo(8, false);
-            gts800.SetDo(9, true);
-
-            Thread.Sleep(500); //////// 定位
-
-            // 料袋定位缸
-            gts800.SetDo(8, true);
-            gts800.SetDo(9, false);
-
-            // 伸缩袋缸
-            gts400.SetDo(0, 13, false);
-            gts400.SetDo(0, 14, true);
-
-            Thread.Sleep(500);
-
-            // 料袋上下缸
-            gts800.SetDo(10, false);
-            gts800.SetDo(11, true);
-
-///// LOOP
-            // 料袋上下辅助缸
-            gts800.SetDo(12, false);
-            gts800.SetDo(13, true);
-
-            // 张开料袋
-            gts400.SetDo(1, 4, true);
-            gts400.SetDo(1, 5, false);
-
-            Thread.Sleep(1000); 
-
-            // 料袋上下辅助缸
-            gts800.SetDo(12, true);
-            gts800.SetDo(13, false);
-
-            Thread.Sleep(1000);
-
- //////// ///// 压力表到位，放倒
-
-            // 料袋衔接缸
-            gts800.SetDo(14, false);
-            gts800.SetDo(15, true);
-
-            // 顶镜片
-            gts400.SetDo(0, 11, true);
-            gts400.SetDo(0, 12, false);
-
-            Thread.Sleep(1000);
-
-            // 推镜片
-            gts400.SetDo(1, 0, true);
-            gts400.SetDo(1, 1, false);
-            Thread.Sleep(1000);
-
-            // 收推杆
-            gts400.SetDo(1, 0, false);
-            gts400.SetDo(1, 1, true);
-            Thread.Sleep(1000);
-
-            // 降镜片
-            gts400.SetDo(0, 11, false);
-            gts400.SetDo(0, 12, true);
-
-            Thread.Sleep(1000);
-
-            // 停止吸气
-            gts400.SetDo(1, 4, false);
-            gts400.SetDo(1, 5, true);
-
-            // 料袋上下缸
-            gts800.SetDo(10, true);
-            gts800.SetDo(11, false);
-
-            // 料袋衔接缸
-            gts800.SetDo(14, true);
-            gts800.SetDo(15, false);
-
-            // 镜片旋转
-            gts400.SetDo(0, 9, true);
-            gts400.SetDo(0, 10, false);
+           
         }
 
         private void btnHome_Click(object sender, EventArgs e)
@@ -609,7 +446,7 @@ namespace UI.motion
             li.hasOK = false;
             li.step = 0;
 
-            lock (this)
+            lock (this.lenList)
             {
                 this.lenList.Add(li);
 
@@ -622,7 +459,7 @@ namespace UI.motion
 
         private bool IsOnposOp1()
         {
-            lock (this)
+            lock (this.lenList)
             {
                 foreach (LenInfo li in this.lenList)
                 {
@@ -636,7 +473,7 @@ namespace UI.motion
 
         private bool IsOnposOp2()
         {
-            lock (this)
+            lock (this.lenList)
             {
                 foreach (LenInfo li in this.lenList)
                 {
@@ -648,9 +485,23 @@ namespace UI.motion
             }
         }
 
+        private bool IsOnposOp3()
+        {
+            lock (this.lenList)
+            {
+                foreach (LenInfo li in this.lenList)
+                {
+                    if (li.step > 2 && li.hasOK)
+                        return true;
+                }
+
+                return false;
+            }
+        }
+
         private bool IsReadyOp1()
         {
-            lock (this)
+            lock (this.lenList)
             {
                 foreach (LenInfo li in this.lenList)
                 {
@@ -664,7 +515,7 @@ namespace UI.motion
 
         private bool IsReadyOp2()
         {
-            lock (this)
+            lock (this.lenList)
             {
                 foreach (LenInfo li in this.lenList)
                 {
@@ -678,7 +529,7 @@ namespace UI.motion
 
         private void SetReadyOp1()
         {
-            lock (this)
+            lock (this.lenList)
             {
                 for (int i = 0; i < this.lenList.Count; i++)
                 {
@@ -694,7 +545,7 @@ namespace UI.motion
 
         private void SetReadyOp2()
         {
-            lock (this)
+            lock (this.lenList)
             {
                 for (int i = 0; i < this.lenList.Count; i++)
                 {
@@ -707,5 +558,12 @@ namespace UI.motion
                 }
             }
         }
+    }
+
+    public class LenInfo
+    {
+        public int step;
+        public bool hasLen;
+        public bool hasOK;
     }
 }
