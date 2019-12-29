@@ -31,6 +31,11 @@ namespace UI.motion
             this.passEvent.Set();
         }
 
+        public override bool IsDone()
+        {
+            return !this.passEvent.IsSet;
+        }
+
         private void Pass()
         {
             this.passEvent.Wait();

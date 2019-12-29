@@ -72,7 +72,6 @@
     </Compile>
     <Compile Include="motion\ParaInfo.cs" />
     <Compile Include="motion\PassOneProcess.cs" />
-    <Compile Include="motion\PreFeedProcess.cs" />
     <Compile Include="motion\StepOneProcess.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -13,9 +13,11 @@ namespace UI.motion
     public class FeedOneProcess : AbstractProcess
     {
         private bool feedSwitch = false; // 指示皮带1、2交替进料
-        private ManualResetEventSlim feedEvent = new ManualResetEventSlim(); // 指示皮带1、2进料一片
+        private ManualResetEventSlim feedEvent = new ManualResetEventSlim(); // 指示进料
+        private ManualResetEventSlim prefeedEvent = new ManualResetEventSlim(); // 指示皮带1、2进料一片
 
-        public FeedOneProcess(GTSMotionProxy gts400, GTSMotionProxy gts800) : base(gts400, gts800)
+        public FeedOneProcess(GTSMotionProxy gts400, GTSMotionProxy gts800)
+            : base(gts400, gts800)
         {
             ThreadPool.QueueUserWorkItem(o =>
             {
@@ -25,11 +27,25 @@ namespace UI.motion
                     this.Feed();
                 }
             });
+
+            ThreadPool.QueueUserWorkItem(o =>
+            {
+                while (true)
+                {
+                    this.startEvent.Wait();
+                    this.Pass();
+                }
+            });
         }
 
         public void Do()
         {
             this.feedEvent.Set();
+        }
+
+        public override bool IsDone()
+        {
+            return !this.feedEvent.IsSet;
         }
 
         private void Feed()
@@ -38,7 +54,7 @@ namespace UI.motion
             bool hasFindLens2 = this.gts400.ReadDi(3, 2);
             bool hasFindLens3 = this.gts400.ReadDi(3, 3);
 
-            bool timeout = this.feedEvent.Wait(1000);
+            bool timeout = !this.prefeedEvent.Wait(50);
             if (timeout)
             {
                 // 1号光耦检测到料停止皮带1
@@ -90,10 +106,10 @@ namespace UI.motion
 
                 if (hasFindLens1 || hasFindLens2)
                 {
-                    this.feedEvent.Reset(); // 进料一片OK
+                    this.prefeedEvent.Reset(); // 进料一片OK
                 }
             }
-            
+
             // 4号皮带一直转
             this.gts800.JogMove(Axis.LensMoveX4, 10, 0.1, 0.1);
         }
@@ -107,6 +123,55 @@ namespace UI.motion
                 if (!this.startEvent.IsSet)
                     break;
                 Thread.Sleep(10);
+            }
+        }
+
+        private void Pass()
+        {
+            bool hasFindLens3 = this.gts400.ReadDi(3, 3);
+            bool hasFindLens4 = this.gts400.ReadDi(3, 4);
+
+            bool timeout = !this.feedEvent.Wait(10);
+            if (timeout)
+            {
+                // 3号光耦检测到料停止皮带3
+                if (hasFindLens3)
+                    this.gts800.Stop(Axis.LensMoveY3);
+                else
+                    this.gts800.JogMove(Axis.LensMoveY3, 10, 0.1, 0.1);
+            }
+            else
+            {
+                if (hasFindLens3)
+                {
+                    this.gts800.JogMove(Axis.LensMoveY3, 10, 0.1, 0.1);
+                    while (this.gts400.ReadDi(3, 3))
+                    {
+                        Thread.Sleep(10);
+                        if (!this.feedEvent.IsSet)
+                            break;
+                    }
+                    this.feedEvent.Reset();
+                }
+                else
+                {
+                    this.gts800.JogMove(Axis.LensMoveY3, 10, 0.1, 0.1);
+                }
+            }
+
+            if (!this.gts400.ReadDi(3, 3))
+            {
+                this.prefeedEvent.Set();
+                while (!this.gts400.ReadDi(3, 3))
+                {
+                    Thread.Sleep(1);
+                    
+                    if (!this.gts400.ReadDi(3, 3))
+                        this.gts800.JogMove(Axis.LensMoveY3, 10, 0.1, 0.1);
+
+                    if (!this.startEvent.IsSet)
+                        break;
+                }
             }
         }
     }

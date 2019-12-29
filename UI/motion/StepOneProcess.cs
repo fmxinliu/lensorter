@@ -40,7 +40,7 @@ namespace UI.motion
             this.stepEvent.Set();
         }
 
-        public bool IsMoveDone()
+        public override bool IsDone()
         {
             return !this.stepEvent.IsSet;
         }

@@ -17,13 +17,13 @@ namespace UI.motion
         GTSMotionProxy gts400;
         GTSMotionProxy gts800;
         FeedOneProcess feedOneProcess;
-        PreFeedProcess prefeedProcess;
         PassOneProcess passOneProcess;
         StepOneProcess stepOneProcess;
         DimMeasureProcess dimMeasureProcess;
         DegreeMeasureProcess degreeMeasureProcess;
         LenPackProcess lenPackProcess;
 
+        private List<IODefine> ioList = new List<IODefine>();
         private List<LenInfo> lenList = new List<LenInfo>();
         private ManualResetEventSlim feedOneEvent = new ManualResetEventSlim(); // 指示皮带1、2进料
         private ManualResetEventSlim passOneEvent = new ManualResetEventSlim(); // 指示皮带3进料
@@ -68,13 +68,12 @@ namespace UI.motion
             this.gts400 = new GTSMotionProxy(Axis.GTS400, Axis.GTS400Total, 4);
             this.gts800 = new GTSMotionProxy(Axis.GTS800, Axis.GTS800Total, 0);
             this.feedOneProcess = new FeedOneProcess(gts400, gts800);
-            this.prefeedProcess = new PreFeedProcess(gts400, gts800);
             this.passOneProcess = new PassOneProcess(gts400, gts800);
             this.stepOneProcess = new StepOneProcess(gts400, gts800);
             this.dimMeasureProcess = new DimMeasureProcess(gts400, gts800);
             this.degreeMeasureProcess = new DegreeMeasureProcess(gts400, gts800);
             this.lenPackProcess = new LenPackProcess(gts400, gts800);
-
+            
             ThreadPool.QueueUserWorkItem(o =>
             {
                 while (true)
@@ -99,37 +98,47 @@ namespace UI.motion
 
                 if (!this.gts400.ReadDi(3, 4)) // 如果挡料位没有料
                 {
-                    this.prefeedProcess.Do();
-                    if (!this.gts400.ReadDi(3, 3)) // 如果备料位没有料
-                        this.feedOneProcess.Do();
-                    
-                    // 等待进料完成
+                    //if (!this.gts400.ReadDi(3, 3)) // 如果备料位没有料
+                    //{
+                    //    // 启动进料
+                    //    this.feedOneProcess.Do();
+                    //    // 等待备料位有料
+                    //    while (!this.gts400.ReadDi(3, 3))
+                    //        Thread.Sleep(10);
+                    //}
+
+                    // 启动进料
+                    this.feedOneProcess.Do();
+
+                    while (!this.feedOneProcess.IsDone())
+                        Thread.Sleep(10);
+
+                    // 等待挡料位进料完成
                     while (!this.gts400.ReadDi(3, 4))
-                        Thread.Sleep(1000);
+                        Thread.Sleep(10);
                 }
 
-                this.AddLen();
+                //this.AddLen();
                 this.passOneProcess.Do(); // 开始进料
-                
+
                 // 等待进料完成
                 while (this.gts400.ReadDi(3, 4))
-                    Thread.Sleep(1000);
+                    Thread.Sleep(10);
 
                 // 继续备料一片
-                this.prefeedProcess.Do();
                 this.feedOneProcess.Do();
             }
             else if (this.IsReadyOp1() && this.IsReadyOp2())
             {
-                if (this.IsOnposOp2())
-                    this.stepOneProcess.MoveToPackpos();
-                else
-                    this.stepOneProcess.StepOne(); // 启动移动一位
+                //if (this.IsOnposOp2())
+                //    this.stepOneProcess.MoveToPackpos();
+                //else
+                //    this.stepOneProcess.StepOne(); // 启动移动一位
 
-                this.Step(); // 镜片队列中全部前移一位
+                //this.Step(); // 镜片队列中全部前移一位
 
-                while (!this.stepOneProcess.IsMoveDone())
-                    Thread.Sleep(200);
+                //while (!this.stepOneProcess.IsDone())
+                //    Thread.Sleep(200);
             }
             else
             {
@@ -393,13 +402,12 @@ namespace UI.motion
                 {
                     btnInit.Text = "关闭";
 
-                    // #1 ~ #6
+                    // #1 ~ #5
                     this.feedOneProcess.Start();
-                    this.prefeedProcess.Start();
-                    this.passOneProcess.Start();
-                    this.stepOneProcess.Start();
-                    this.dimMeasureProcess.Start();
-                    this.degreeMeasureProcess.Start();
+                    //this.passOneProcess.Start();
+                    //this.stepOneProcess.Start();
+                    //this.dimMeasureProcess.Start();
+                    //this.degreeMeasureProcess.Start();
                     this.Start = true;
                 }
             }
@@ -565,5 +573,13 @@ namespace UI.motion
         public int step;
         public bool hasLen;
         public bool hasOK;
+    }
+
+    public class IODefine
+    {
+        public string Name;
+        public int CardIdx;
+        public int MdlIdx;
+        public bool Value;
     }
 }

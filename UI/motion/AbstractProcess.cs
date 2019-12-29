@@ -29,5 +29,10 @@ namespace UI.motion
         {
             this.startEvent.Reset();
         }
+
+        public virtual bool IsDone()
+        {
+            return false;
+        }
     }
 }
