@@ -1,0 +1,35 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: VC_POSTEK_PRINT - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\hechao\AppData\Local\Temp\RSP8384.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fp"Debug/VC_POSTEK_PRINT.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\1-代码维护\2-DLL代码维护\1-正式版_DLL_20141224\New_DLL\Windows\提交版本\PostekLibary_beta_20150708\WINPSK(beta)_V10.0.0.3150126\Demo_32\VC TEST\VC_POSTEK_PRINTDlg.cpp"
+]
+Creating command line "cl.exe @C:\Users\hechao\AppData\Local\Temp\RSP8384.tmp" 
+Creating temporary file "C:\Users\hechao\AppData\Local\Temp\RSP8385.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:yes /pdb:"Debug/VC_POSTEK_PRINT.pdb" /debug /machine:I386 /out:"Debug/VC_POSTEK_PRINT.exe" /pdbtype:sept 
+".\Debug\StdAfx.obj"
+".\Debug\VC_POSTEK_PRINT.obj"
+".\Debug\VC_POSTEK_PRINTDlg.obj"
+".\Debug\VC_POSTEK_PRINT.res"
+]
+Creating command line "link.exe @C:\Users\hechao\AppData\Local\Temp\RSP8385.tmp"
+<h3>Output Window</h3>
+Compiling...
+VC_POSTEK_PRINTDlg.cpp
+Linking...
+
+
+
+<h3>Results</h3>
+VC_POSTEK_PRINT.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>
